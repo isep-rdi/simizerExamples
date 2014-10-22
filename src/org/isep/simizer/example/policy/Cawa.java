@@ -23,7 +23,7 @@ import simizer.utils.SimizerUtils;
 
 /**
  *
- * @author rchiky
+ * @author rdi
  */
 public class Cawa implements Policy{
     static Map<Integer,Request> nodeRequestMap = null;
