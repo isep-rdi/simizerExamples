@@ -29,6 +29,7 @@ public class SimizerExamples {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         ClientNode.configureLaws(
                 new GaussianLaw(15), 
                 new GaussianLaw(15), 
@@ -46,20 +47,20 @@ public class SimizerExamples {
        //2. machines creation
         VM vm1 =new VM(1, net);
         vm1.deploy(new LoadBalancerApp(0, 20000, new RoundRobin()));
-        VM vmApp0 = new VM(2,net),
-            vmApp1 = new VM(3,net);
+//        VM vmApp0 = new VM(2,net),
+//            vmApp1 = new VM(3,net);
         InterpolationApp cap1 = new InterpolationApp(0);
         cap1.setFrontend(1);
         InterpolationApp cap2 = new InterpolationApp(0);
         cap2.setFrontend(1);
         ResourceFactory rf = new ResourceFactory(1000, 2000, 1024);
         StorageElement.setFactory(rf);
-        StorageElement se = new StorageElement(5120000000L, 10L);
-        se.write(rf.getStartList());
-        vmApp0.setStorage(se);
-        se = new StorageElement(5120000000L, 10L);
-         se.write(rf.getStartList());
-        vmApp1.setStorage(se);
+//        StorageElement se = new StorageElement(5120000000L, 10L);
+//        se.write(rf.getStartList());
+//        vmApp0.setStorage(se);
+//        se = new StorageElement(5120000000L, 10L);
+//         se.write(rf.getStartList());
+//        vmApp1.setStorage(se);
         
         //3. Client creation
         ClientNode cn1 = new ClientNode(4,net, 0);
@@ -72,13 +73,13 @@ public class SimizerExamples {
         sim.addClient(cn1);
         sim.addNetwork("net", net);
         sim.addNodeToNet(vm1, "net");
-        sim.addNodeToNet(vmApp1,"net");
-        sim.addNodeToNet(vmApp0, "net");
+//        sim.addNodeToNet(vmApp1,"net");
+//        sim.addNodeToNet(vmApp0, "net");
         sim.addNodeToNet(cn2, "net");
         sim.addNodeToNet(cn1, "net");
-        vmApp0.deploy(cap1);
-        vmApp1.deploy(cap2);
-        
+//        vmApp0.deploy(cap1);
+//        vmApp1.deploy(cap2);
+//        
         try {
             sim.runSim();
         } catch (Exception ex) {
