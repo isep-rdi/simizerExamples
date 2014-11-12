@@ -24,15 +24,14 @@ public class QualifExample {
     Simulation sim = new Simulation(20000);
     //LAN
     Network lan = new Network(new UniLaw(0));
-    sim.addNetwork("net", lan);
+    
     StorageElement.setFactory(SimizerUtils.getDefaultResourceFactory());
     Processor p = new NewProcessor(2, 1000.0);
     ServerNode sn = new ServerNode(0, 512000, 50, 0.0, new StorageElement(5120000, 2), p);
 
     LBNode frontend = new LBNode(1, new RoundRobin());
     sn.setFrontendNode(frontend);
-    sim.addNodeToNet(sn, "net");
-    sim.addNodeToNet(frontend, "net");
+    sim.toNetworkAddNodes(lan, sn, frontend);
 
     int typeId = 0;
     String params = "p1=1";
