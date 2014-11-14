@@ -17,7 +17,7 @@ import simizer.LBNode;
 import simizer.Node;
 import simizer.ServerNode;
 import simizer.event.Channel;
-import simizer.event.EventDispatcher2;
+import simizer.event.EventDispatcher;
 import simizer.laws.Law;
 import simizer.laws.UniLaw;
 import simizer.network.ClientGenerator;
@@ -190,10 +190,10 @@ public class RunExample {
         int nbCores = 1;// Runtime.getRuntime().availableProcessors() +1;
 
         ExecutorService es = Executors.newFixedThreadPool(nbCores);
-        EventDispatcher2[] edArray = new EventDispatcher2[nbCores];
+        EventDispatcher[] edArray = new EventDispatcher[nbCores];
 
         for (int i = 0; i < nbCores; i++) {
-            edArray[i] = new EventDispatcher2(c);
+            edArray[i] = new EventDispatcher(c);
             es.submit(edArray[i]);
         }
 
@@ -202,7 +202,7 @@ public class RunExample {
         while (edArray[0].getChannel().size() > 0) {
             sum = 0;
             for (int i = 0; i < edArray.length; i++) {
-                sum += edArray[i].getEvtCounter();
+                sum += edArray[i].getEventCount();
             }
             try {
                 Thread.sleep(10);
@@ -339,7 +339,7 @@ public class RunExample {
         lbn.setInsideNetwork(lan);
         lbn.setOutsideNetwork(internet);
 
-        EventDispatcher2 ed = new EventDispatcher2(c);
+        EventDispatcher ed = new EventDispatcher(c);
         Thread simThread = new Thread(ed);
         System.out.println("Starting simulation for " + endSim + " milisecs " + ed.getChannel().size());
         try {
