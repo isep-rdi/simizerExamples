@@ -321,7 +321,8 @@ public class RunExample {
             n.getCapacity();
             StorageElement se = new StorageElement(
                     ((long) resfac.getMax()) * resfac.getResourceSize()
-                    , 6L, 2.0);
+                    , 6L);
+            se.setPerMBReadDelay(2.0);
             se.write(resfac.getStartList(nbResPerNode));
             n.setStorage(se);
             
