@@ -123,7 +123,7 @@ public class RunExample {
         //@TODO create a storage element for each node with different ressources (RR fashion)
 
         StorageElement.setFactory(resfac);
-        final StorageElement se = new StorageElement(resfac.getMax() * resfac.getSize(), 6L);
+        final StorageElement se = new StorageElement(resfac.getMax() * resfac.getResourceSize(), 6L);
         se.write(resfac.getStartList());
 
         
@@ -320,7 +320,7 @@ public class RunExample {
             n.setFrontendNode(lbn);
             n.getCapacity();
             StorageElement se = new StorageElement(
-                    ((long) resfac.getMax()) * resfac.getSize()
+                    ((long) resfac.getMax()) * resfac.getResourceSize()
                     , 6L, 2.0);
             se.write(resfac.getStartList(nbResPerNode));
             n.setStorage(se);
