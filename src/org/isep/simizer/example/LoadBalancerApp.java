@@ -6,10 +6,10 @@ package org.isep.simizer.example;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.isep.simizer.example.policy.Policy;
+import org.isep.simizer.example.policy.PolicyAfterCallback;
 import simizer.Node;
 import simizer.app.Application;
-import simizer.policy.Policy;
-import simizer.policy.PolicyAfterCallback;
 import simizer.requests.Request;
 
 /**

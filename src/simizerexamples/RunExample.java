@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.isep.simizer.example.policy.Policy;
 import simizer.ClientNode;
 import simizer.LBNode;
 import simizer.Node;
@@ -26,7 +27,6 @@ import simizer.requests.Request;
 import simizer.requests.RequestFactory;
 import simizer.storage.ResourceFactory;
 import simizer.storage.StorageElement;
-import simizer.policy.Policy;
 import simizer.utils.SimizerUtils;
 
 /**

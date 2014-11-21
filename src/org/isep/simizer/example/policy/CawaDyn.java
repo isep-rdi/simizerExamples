@@ -11,8 +11,6 @@ import simizer.ServerNode;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.Clustering;
 import org.isep.simizer.example.policy.utils.LpSolving;
-import simizer.policy.Policy;
-import simizer.policy.PolicyAfterCallback;
 import simizer.utils.Vector;
 
 /**

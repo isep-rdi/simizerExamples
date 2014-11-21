@@ -9,7 +9,6 @@ import java.util.List;
 import simizer.LBNode;
 import simizer.Node;
 import simizer.ServerNode;
-import simizer.policy.Policy;
 import simizer.requests.Request;
 
 /**

@@ -7,8 +7,6 @@ import simizer.ServerNode;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.ClusteringRequests;
 import org.isep.simizer.example.policy.utils.LpSolver;
-import simizer.policy.Policy;
-import simizer.policy.PolicyAfterCallback;
 import simizer.utils.Vector;
 
 public class CostAware implements Policy, PolicyAfterCallback {

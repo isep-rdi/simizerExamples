@@ -10,7 +10,6 @@ import simizer.Node;
 import simizer.ServerNode;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.ConsistentHash;
-import simizer.policy.Policy;
 
 /**
  *

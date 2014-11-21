@@ -12,8 +12,6 @@ import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.BlockBloomFilter;
 import org.isep.simizer.example.policy.utils.Fiboheap;
 import org.isep.simizer.example.policy.utils.Fiboheap.FNode;
-import simizer.policy.Policy;
-import simizer.policy.PolicyAfterCallback;
 
 /**
  *

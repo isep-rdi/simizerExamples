@@ -13,8 +13,6 @@ import simizer.Node;
 import simizer.ServerNode;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.CountingFilter;
-import simizer.policy.Policy;
-import simizer.policy.PolicyAfterCallback;
 
 /**
 *
