@@ -63,8 +63,4 @@ public class LeastLoadedPolicy extends Policy.Callback {
     load.put(node.getId(), load.get(node.getId()) - 1);
   }
 
-  @Override
-  public void printAdditionnalStats() {
-  }
-
 }

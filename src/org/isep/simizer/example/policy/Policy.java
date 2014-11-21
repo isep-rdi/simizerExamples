@@ -15,7 +15,9 @@ public abstract class Policy {
 
   public abstract MessageReceiver loadBalance(Request request);
 
-  public abstract void printAdditionnalStats();
+  public void printAdditionnalStats() {
+    System.out.println("No additional stats for: " + this.getClass().getName());
+  }
 
   public abstract static class Callback extends Policy {
     public abstract void receivedRequest(VM node, Request request);

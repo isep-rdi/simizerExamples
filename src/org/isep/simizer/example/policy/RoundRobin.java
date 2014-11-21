@@ -45,8 +45,4 @@ public class RoundRobin extends Policy {
     }
   }
 
-  @Override
-  public void printAdditionnalStats() {
-  }
-
 }
