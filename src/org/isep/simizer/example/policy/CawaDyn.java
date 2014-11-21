@@ -22,7 +22,7 @@ import simizer.utils.Vector;
  * 
  * @author R. Chiky
  */
-public class CawaDyn implements Policy, PolicyAfterCallback {
+public class CawaDyn implements Policy, Policy.Callback {
     public static int REQUEST_THRESOLD = 100;
     public static boolean CLUSTERED = false;
     

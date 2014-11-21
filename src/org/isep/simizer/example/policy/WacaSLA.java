@@ -18,7 +18,7 @@ import org.isep.simizer.example.policy.utils.CountingFilter;
 *
 * @author sathya
 */
-public class WacaSLA implements Policy, PolicyAfterCallback {
+public class WacaSLA implements Policy, Policy.Callback {
     private List<ServerNode> nodeList = null;
     private Map<Integer,CountingFilter<String>> nodeBloomMap = null;
     private Map<Integer, Integer> histories = null;

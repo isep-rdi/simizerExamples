@@ -17,7 +17,7 @@ import org.isep.simizer.example.policy.utils.Fiboheap.FNode;
  *
  * @author isep
  */
-public class BlockBasedWaca implements Policy, PolicyAfterCallback{
+public class BlockBasedWaca implements Policy, Policy.Callback {
     static long blockhits, bloomhits;
     private static int LOAD_FACTOR = 1;
     public int[] hash(String params, int k) {

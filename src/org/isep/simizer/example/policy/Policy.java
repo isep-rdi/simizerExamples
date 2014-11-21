@@ -18,4 +18,8 @@ public interface Policy {
 
   public void printAdditionnalStats();
 
+  public interface Callback {
+    public void receivedRequest(Node node, Request request);
+  }
+
 }

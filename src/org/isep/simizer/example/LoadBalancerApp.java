@@ -7,7 +7,6 @@ package org.isep.simizer.example;
 import java.util.HashMap;
 import java.util.Map;
 import org.isep.simizer.example.policy.Policy;
-import org.isep.simizer.example.policy.PolicyAfterCallback;
 import simizer.Node;
 import simizer.app.Application;
 import simizer.requests.Request;
@@ -21,14 +20,16 @@ import simizer.requests.Request;
 public class LoadBalancerApp extends Application {
 
     private final Policy pol;
-    private PolicyAfterCallback pac = null;
+    private final Policy.Callback pac;
     private final Map<Long, Node> pending = new HashMap<>();
 
     public LoadBalancerApp(int id, int memSize, Policy pol) {
         super(id, memSize);
         this.pol = pol;
-        if (pol instanceof PolicyAfterCallback) {
-            this.pac = (PolicyAfterCallback) pol;
+        if (pol instanceof Policy.Callback) {
+          this.pac = (Policy.Callback) pol;
+        } else {
+          this.pac = null;
         }
     }
     /**

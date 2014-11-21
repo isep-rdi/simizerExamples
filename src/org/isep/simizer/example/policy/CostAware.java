@@ -9,7 +9,7 @@ import org.isep.simizer.example.policy.utils.ClusteringRequests;
 import org.isep.simizer.example.policy.utils.LpSolver;
 import simizer.utils.Vector;
 
-public class CostAware implements Policy, PolicyAfterCallback {
+public class CostAware implements Policy, Policy.Callback {
     public static int REQUEST_THRESOLD = 200;
     public static boolean CLUSTERED = false;
     public static Random random = new Random(System.nanoTime());

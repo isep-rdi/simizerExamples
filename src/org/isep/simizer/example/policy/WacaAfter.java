@@ -14,7 +14,7 @@ import simizer.requests.Request;
  *
  * @author isep
  */
-public class WacaAfter implements Policy, PolicyAfterCallback {
+public class WacaAfter implements Policy, Policy.Callback {
 
     @Override
     public void initialize(List<ServerNode> availableNodes, LBNode lbn) {

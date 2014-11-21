@@ -17,7 +17,7 @@ import simizer.requests.Request;
  *
  * @author isep
  */
-public class LeastLoadedPolicy implements Policy, PolicyAfterCallback {
+public class LeastLoadedPolicy implements Policy, Policy.Callback {
     private List<ServerNode> nodeList;
     private final Map<Integer, Integer> nodeReq = new ConcurrentHashMap<Integer,Integer>();
 
