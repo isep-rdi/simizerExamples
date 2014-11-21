@@ -1,67 +1,52 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.isep.simizer.example.policy;
 
 import java.util.ArrayList;
 import java.util.List;
-import simizer.LBNode;
-import simizer.Node;
-import simizer.ServerNode;
+import simizer.VM;
+import simizer.network.MessageReceiver;
 import simizer.requests.Request;
 
-/**
- *
- * @author isep
- */
-public class RoundRobin implements Policy {
-    List<ServerNode> availableNodes = new ArrayList<ServerNode>();
-    protected int rrIndex = 0;
-    protected int nodeCount = 0;
-    public RoundRobin() {
-        rrIndex = 0;
-    }
-    
-    @Override
-    public Node loadBalance(Request r) {
-        //System.out.println(rrIndex + " " + availableNodes.size() + "==" + (rrIndex%availableNodes.size()) );
-        if(availableNodes.size() > 0)
-            return availableNodes.get(rrIndex++ % availableNodes.size());
-        else 
-            return null;
-    }
+public class RoundRobin extends Policy {
 
-    
+  /** Stores the list of Nodes used by this Policy. */
+  private final List<VM> nodes = new ArrayList<>();
 
-    @Override
-    public void printAdditionnalStats() {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+  /** Stores a request counter used to select a server for each Request. */
+  protected int index = 0;
 
-    @Override
-    public void initialize(List<ServerNode> availableNodes, LBNode f) {
-        this.availableNodes = availableNodes;
+  @Override
+  public MessageReceiver loadBalance(Request request) {
+    int count = nodes.size();
+    if (count > 0) {
+      VM vm = nodes.get(index % count);
+      index++;
+      return vm;
+    } else {
+      return null;
     }
+  }
 
-    @Override
-    public void addNode(Node n) {
-        ServerNode sn= (ServerNode)n;
-        synchronized(this) {
-            if(!availableNodes.contains(sn)) {
-                availableNodes.add(sn);
-            }
-        }
-    }
+  @Override
+  public void initialize(List<VM> nodes) {
+    nodes.addAll(nodes);
+  }
 
-    @Override
-    public void removeNode(Node n) {
-        ServerNode sn= (ServerNode)n;
-        synchronized(this) {
-            if(availableNodes.contains(sn)) {
-                availableNodes.remove(sn);
-            }
-        }
+  @Override
+  public void addNode(VM vm) {
+    if (!nodes.contains(vm)) {
+      nodes.add(vm);
     }
-    
+  }
+
+  @Override
+  public void removeNode(VM vm) {
+    if (nodes.contains(vm)) {
+      nodes.remove(vm);
+    }
+  }
+
+  @Override
+  public void printAdditionnalStats() {
+  }
+
 }
