@@ -1,68 +1,70 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.isep.simizer.example.policy;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import simizer.LBNode;
 import simizer.Node;
-import simizer.ServerNode;
+import simizer.VM;
+import simizer.network.MessageReceiver;
 import simizer.requests.Request;
 
-/**
- *
- * @author isep
- */
-public class LeastLoadedPolicy implements Policy, Policy.Callback {
-    private List<ServerNode> nodeList;
-    private final Map<Integer, Integer> nodeReq = new ConcurrentHashMap<Integer,Integer>();
+public class LeastLoadedPolicy extends Policy.Callback {
 
-    @Override
-    public void printAdditionnalStats() {
-        //throw new UnsupportedOperationException("Not supported yet.");
+  /** Stores the list of Nodes in the system. */
+  private List<VM> nodes;
+
+  /** Stores the current load for each Node. */
+  private final Map<Integer, Integer> load = new ConcurrentHashMap<>();
+
+  @Override
+  public void initialize(List<VM> availableNodes) {
+    nodes = new LinkedList(availableNodes);
+    for (Node node : nodes) {
+      load.put(node.getId(), 0);
+    }
+  }
+
+  @Override
+  public void addNode(VM vm) {
+    nodes.add(vm);
+    load.put(vm.getId(), 0);
+  }
+
+  @Override
+  public void removeNode(VM vm) {
+    nodes.remove(vm);
+    load.remove(vm.getId());
+  }
+
+  @Override
+  public MessageReceiver loadBalance(Request request) {
+    Iterator<VM> iterator = nodes.iterator();
+    Node target = iterator.next();
+
+    // try to find a node with less load
+    while (iterator.hasNext()) {
+      Node next = iterator.next();
+      if (load.get(next.getId()) < load.get(target.getId())) {
+        target = next;
+      }
     }
 
-    @Override
-    public void initialize(List<ServerNode> availableNodes, LBNode f) {
-       nodeList = new LinkedList(availableNodes);
-       for(Node n : nodeList) {
-           nodeReq.put(n.getId(), 0);
-       }
-       f.registerAfter(this);
-    }
+    // mark the Node we choose with an additional request
+    load.put(target.getId(), load.get(target.getId()) + 1);
 
-    @Override
-    public void addNode(Node n) {
-        nodeList.add((ServerNode)n);
-    }
+    return target;
+  }
 
-    @Override
-    public void removeNode(Node n) {
-        nodeList.remove(n);
-    }
+  @Override
+  public void receivedRequest(VM node, Request request) {
+    // when the request is finished, we need to update our tables
+    load.put(node.getId(), load.get(node.getId()) - 1);
+  }
 
-    @Override
-    public Node loadBalance(Request r) {
-        Node tgt = nodeList.get(0);
-        
-        for(Node n: nodeList) {
-            if(nodeReq.get(n.getId())< nodeReq.get(tgt.getId()) ) {
-                tgt = n;
-                
-            }
-        }
-        nodeReq.put(tgt.getId(), nodeReq.get(tgt.getId()) +1 );
-        //System.out.println(tgt.getId() + " requests " + tgt.getRequestCount(0) + " " + r.getId());
-        return tgt;
-    }
+  @Override
+  public void printAdditionnalStats() {
+  }
 
-    @Override
-    public void receivedRequest(Node n, Request r) {
-        nodeReq.put(n.getId(), nodeReq.get(n.getId()) -1 );
-    }
-    
 }
