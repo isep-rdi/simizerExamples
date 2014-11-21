@@ -1,25 +1,24 @@
 package org.isep.simizer.example.policy;
 
 import java.util.List;
-import simizer.LBNode;
-import simizer.Node;
-import simizer.ServerNode;
+import simizer.VM;
+import simizer.network.MessageReceiver;
 import simizer.requests.Request;
 
-public interface Policy {
+public abstract class Policy {
 
-  public void initialize(List<ServerNode> availableNodes, LBNode loadBalancer);
+  public abstract void initialize(List<VM> availableNodes);
 
-  public void addNode(Node node);
+  public abstract void addNode(VM node);
 
-  public void removeNode(Node node);
+  public abstract void removeNode(VM node);
 
-  public Node loadBalance(Request request);
+  public abstract MessageReceiver loadBalance(Request request);
 
-  public void printAdditionnalStats();
+  public abstract void printAdditionnalStats();
 
-  public interface Callback {
-    public void receivedRequest(Node node, Request request);
+  public abstract static class Callback extends Policy {
+    public abstract void receivedRequest(VM node, Request request);
   }
 
 }
