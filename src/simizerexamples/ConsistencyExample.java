@@ -42,6 +42,12 @@ public class ConsistencyExample {
     //1. Network creation
     Network net = new Network(new GaussianLaw(15));
 
+    //3. Create disks:
+    ResourceFactory rf = new ResourceFactory(1000, 2000, 1024);
+    StorageElement.setFactory(rf);
+    StorageElement se1 = new StorageElement(5120000000L, 10L);
+    StorageElement se2 = new StorageElement(5120000000L, 10L);
+
     //2. machines creation
     VM vm1 = new VM(1, net);
     ConsistentPolicy cp = new ConsistentPolicy();
@@ -49,21 +55,13 @@ public class ConsistencyExample {
 
     OptimisticPolicy.hashRing = new ConsistentHash<>(REP_FACTOR, 1, null);
     PessimisticPolicy.hashRing = new ConsistentHash<>(REP_FACTOR, 1, null);
-    VM vmApp0 = new VM(2, net);
-    VM vmApp1 = new VM(3, net);
+    VM vmApp0 = new VM(2, null, se1, net, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
+    VM vmApp1 = new VM(2, null, se2, net, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
 
     cp.initialize(null, null);
     //cp.addNode(vmApp0);
     //cp.addNode(vmApp1);
     vm1.deploy(new LoadBalancerApp(0, 20000, cp));
-
-    //3. Create disks:
-    ResourceFactory rf = new ResourceFactory(1000, 2000, 1024);
-    StorageElement.setFactory(rf);
-    StorageElement se = new StorageElement(5120000000L, 10L);
-    vmApp0.setStorage(se);
-    se = new StorageElement(5120000000L, 10L);
-    vmApp1.setStorage(se);
 
     //3. Client creation
     ClientNode cn1 = new ClientNode(4, net, 0);
