@@ -6,70 +6,66 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import simizer.LBNode;
 import simizer.Node;
-import simizer.ServerNode;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.CountingFilter;
+import simizer.VM;
 
 /**
  *
  * @author sathya
  */
-public class WacaNoHistory implements Policy {
+public class WacaNoHistory extends Policy {
 
   static Map<Integer, CountingFilter<String>> nodeBloomMap = null;
   static double fp_rate = 1.0 / 10.0;
   static long bloomhits = 0;
-  static List<ServerNode> nodeList = new LinkedList<ServerNode>();
+  static List<VM> nodeList = new LinkedList<>();
   /* Associates unique CountingFilter for each IP address
    * @param nodeBloomMap map each IP to unique BF
    */
 
   @Override
-  public void initialize(List<ServerNode> nodeList, LBNode f) {
+  public void initialize(List<VM> nodeList) {
     synchronized (this) {
-      nodeBloomMap = new HashMap<Integer, CountingFilter<String>>();
+      nodeBloomMap = new HashMap<>();
 
-      for (ServerNode n : nodeList) {
-        nodeBloomMap.put(new Integer(n.getId()), new CountingFilter<String>(n.getCapacity(), fp_rate));
-        this.nodeList.add(n);
-
+      for (VM vm : nodeList) {
+        nodeBloomMap.put(vm.getId(),
+            new CountingFilter<String>(vm.getMaximumActiveRequestsCount(),
+                fp_rate));
+        this.nodeList.add(vm);
       }
     }
   }
 
   @Override
   public Node loadBalance(Request r) {
-    //long time = System.nanoTime();
-    ServerNode result = null;
-    ServerNode leastLoaded = null;
-    ServerNode bloomNode = null;
+    VM leastLoaded = null;
+    VM bloomNode = null;
     String query = r.getParameters();
-    //System.out.println(query);
-//        if(nodeBloomMap == null)
-//          initialize(nodeList);
 
-    Node target;
 
-    for (ServerNode n : nodeList) {
-      CountingFilter<String> bf = nodeBloomMap.get(n.getId());
+    for (VM vm : nodeList) {
+      CountingFilter<String> bf = nodeBloomMap.get(vm.getId());
 
       if (bf.contains(query)) {
         if (bloomNode == null) {
-          bloomNode = n;
-        } else if (n.getRequestCount() < bloomNode.getRequestCount());
-        bloomNode = n;
+          bloomNode = vm;
+        } else if (vm.getRequestCount() < bloomNode.getRequestCount());
+        bloomNode = vm;
 
       } else {
         if (leastLoaded == null) {
-          leastLoaded = n;
-        } else if (n.getRequestCount() < leastLoaded.getRequestCount()) {
-          leastLoaded = n;
+          leastLoaded = vm;
+        } else if (vm.getRequestCount() < leastLoaded.getRequestCount()) {
+          leastLoaded = vm;
         }
       }
 
     }
+
+    Node target;
 
     if (bloomNode != null) {
       target = bloomNode;
@@ -78,25 +74,24 @@ public class WacaNoHistory implements Policy {
       target = leastLoaded;
       CountingFilter<String> bf = nodeBloomMap.get(target.getId());
       bf.add(query);
-
     }
 
     return target;
   }
 
   @Override
+  public void addNode(VM vm) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void removeNode(VM vm) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
   public void printAdditionnalStats() {
     System.out.println("Number of bloom hits: " + bloomhits);
-  }
-
-  @Override
-  public void addNode(Node n) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public void removeNode(Node n) {
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 
 }

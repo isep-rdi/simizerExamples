@@ -1,25 +1,24 @@
 package org.isep.simizer.example.policy;
 
 import java.util.List;
-import simizer.LBNode;
 import simizer.Node;
-import simizer.ServerNode;
+import simizer.VM;
 import simizer.requests.Request;
 
-public class WacaAfter implements Policy, Policy.Callback {
+public class WacaAfter extends Policy.Callback {
 
   @Override
-  public void initialize(List<ServerNode> availableNodes, LBNode lbn) {
+  public void initialize(List<VM> availableNodes) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public void addNode(Node n) {
+  public void addNode(VM vm) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public void removeNode(Node n) {
+  public void removeNode(VM vm) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -29,12 +28,7 @@ public class WacaAfter implements Policy, Policy.Callback {
   }
 
   @Override
-  public void printAdditionnalStats() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public void receivedRequest(Node n, Request r) {
+  public void receivedRequest(VM vm, Request request) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
