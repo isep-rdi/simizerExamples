@@ -70,7 +70,7 @@ public class ClusteringRequests {
                 //  System.out.println("J:" + (j*2));
                 reqMat[i][j - 1] = Double.parseDouble(tmpQuery[ (j * 2)]);
             }
-            //reqMat[i][nbParam] = (double)queries[i].getFtime()-queries[i].getArTime();
+            //reqMat[i][nbParam] = (double)queries[i].getServerFinishTime()-queries[i].getClientStartTimestamp();
             int nodeId = queries[i].getNodeId();
             double curAvg = machineToCost[nodeId];
             machineToCost[nodeId] = ((curAvg * nodeCount[nodeId]) + queries[i].getCost()) / (nodeCount[nodeId] + 1);

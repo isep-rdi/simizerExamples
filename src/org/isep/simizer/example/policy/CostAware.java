@@ -83,7 +83,7 @@ public class CostAware extends Policy.Callback {
       nodeProcTime.put(vm.getId(), 0L);
     }
 
-    long stime = request.getFtime() - request.getArTime() - request.getDelay() + nodeProcTime.get(vm.getId());
+    long stime = request.getServerFinishTimestamp() - request.getClientStartTimestamp() - request.getDelay() + nodeProcTime.get(vm.getId());
     nodeProcTime.put(vm.getId(), stime);
 
     requests.add(request);
@@ -107,12 +107,12 @@ public class CostAware extends Policy.Callback {
     int[] counts = new int[nodeList.size()];
 
     // calculate interval 
-    double interval = (double) last.getFtime() - lastInterval;
-    lastInterval = last.getFtime();
+    double interval = (double) last.getServerFinishTimestamp() - lastInterval;
+    lastInterval = last.getServerFinishTimestamp();
     System.out.println("interval:" + interval);
     double total = 0, tmpc;
     for (Request r : requests) {
-      double duration = (double) r.getFtime() - r.getArTime();
+      double duration = (double) r.getServerFinishTimestamp() - r.getClientStartTimestamp();
       Node n = nodeList.get(r.getNodeId());
       tmpc = (duration / 1000) * (((VM) n).getCost() / 3600);
       total += tmpc;

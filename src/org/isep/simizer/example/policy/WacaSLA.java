@@ -98,7 +98,7 @@ public class WacaSLA extends Policy.Callback {
   public void receivedRequest(VM vm, Request request) {
     Integer nodeId = vm.getId();
     int coef = nbRequests[nodeId];
-    long exetime = request.getFtime() - request.getArTime();
+    long exetime = request.getServerFinishTimestamp() - request.getClientStartTimestamp();
 
     double avg = (avgResponses.get(nodeId) * coef + exetime) / (coef + 1);
     avgResponses.put(nodeId, avg);

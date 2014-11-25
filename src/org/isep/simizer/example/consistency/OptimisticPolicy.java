@@ -93,7 +93,7 @@ public class OptimisticPolicy extends StoreApplication {
     protected void sendReplicationRequest(Node n, Resource res) {
           Request req = new ReplicationRequest(res);
           req.setAppId(super.getId());
-          req.setArtime(vm.getClock());
+          req.setClientStartTimestamp(vm.getClock());
           this.sendOneWay(n, req);
       }
 }

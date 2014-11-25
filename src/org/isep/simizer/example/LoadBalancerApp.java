@@ -41,7 +41,7 @@ public class LoadBalancerApp extends Application {
 
   @Override
   public void handle(Node orig, Request req) {
-    if (req.getFtime() == 0) { // Registration or application request
+    if (req.getServerFinishTimestamp() == 0) { // Registration or application request
       if (req.getParameters().equals("register")) {
         // if it is registering, it must be a VM
         handleRegisterRequest((VM) orig, req);

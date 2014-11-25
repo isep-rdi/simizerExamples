@@ -35,7 +35,7 @@ public class PessimisticPolicy extends StoreApplication {
      @Override
     public void handle(Node orig, Request req) {
         // check if this is replication answer.
-        if(req instanceof ReplicationRequest && req.getFtime() > 0) {
+        if(req instanceof ReplicationRequest && req.getServerFinishTimestamp() > 0) {
             this.handleReplicationAck(orig, (ReplicationRequest) req);
         } else {
             super.handle(orig, req);
@@ -101,7 +101,7 @@ public class PessimisticPolicy extends StoreApplication {
     protected void sendReplicationRequest(Node n, Resource res) {
           Request req = new ReplicationRequest(res, this.vm);
           req.setAppId(super.getId());
-          req.setArtime(vm.getClock());
+          req.setClientStartTimestamp(vm.getClock());
           sendRequest(n, req);
       }
     private void handleReplicationAck(Node orig, ReplicationRequest rr) {

@@ -120,7 +120,7 @@ public class CawaDyn extends Policy.Callback {
       nodeProcTime.put(vm.getId(), 0L);
     }
 
-    long stime = request.getFtime() - request.getArTime() - request.getDelay() + nodeProcTime.get(vm.getId());
+    long stime = request.getServerFinishTimestamp() - request.getClientStartTimestamp() - request.getDelay() + nodeProcTime.get(vm.getId());
     nodeProcTime.put(vm.getId(), stime);
     requests.add(request);
     synchronized (this) {
@@ -140,10 +140,10 @@ public class CawaDyn extends Policy.Callback {
     Request first = requests.get(0);
     Request last = requests.get(requests.size() - 1);
     // calculate interval
-    double interval = (double) (last.getFtime() - first.getArTime());
+    double interval = (double) (last.getServerFinishTimestamp() - first.getClientStartTimestamp());
     double total = 0, tmpc = 0;
     for (Request r : requests) {
-      double duration = (double) r.getFtime() - r.getArTime();
+      double duration = (double) r.getServerFinishTimestamp() - r.getClientStartTimestamp();
       VM vm = nodeList.get(r.getNodeId());
       // because the cost is per hour
       tmpc = getCost(interval, duration, vm.getCost(), nodeProcTime.get(vm.getId()));
