@@ -1,12 +1,16 @@
 package org.isep.simizer.example.policy;
 
-import java.util.*;
-import simizer.LBNode;
-import simizer.Node;
-import simizer.ServerNode;
-import simizer.requests.Request;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import org.isep.simizer.example.policy.utils.Clustering;
 import org.isep.simizer.example.policy.utils.LpSolving;
+import simizer.Node;
+import simizer.VM;
+import simizer.requests.Request;
 import simizer.utils.Vector;
 
 /**
@@ -19,39 +23,36 @@ import simizer.utils.Vector;
  *
  * @author R. Chiky
  */
-public class CawaDyn implements Policy, Policy.Callback {
+public class CawaDyn extends Policy.Callback {
 
   public static int REQUEST_THRESOLD = 100;
   public static boolean CLUSTERED = false;
 
   // This structure maps each class center to its optimal node
-  Map<Vector, Node> protoToNode = new TreeMap<Vector, Node>();
+  Map<Vector, Node> protoToNode = new TreeMap<>();
   // Utility map for cost calculation total processing time per node
-  Map<Integer, Long> nodeProcTime = new TreeMap<Integer, Long>();
+  Map<Integer, Long> nodeProcTime = new TreeMap<>();
   private int[] nodeCount;
   // List of recorded requests
-  List<Request> requests = new LinkedList<Request>();
-  //static Random ran = new Random(System.currentTimeMillis());
-  List<ServerNode> nodeList;
+  List<Request> requests = new LinkedList<>();
+  List<VM> nodeList;
   private int counter = 0;
 
   @Override
-  public void initialize(List<ServerNode> availableNodes, LBNode f) {
-    f.registerAfter(this);
-    this.nodeList = new ArrayList(availableNodes);
+  public void initialize(List<VM> availableNodes) {
+    this.nodeList = new ArrayList<>(availableNodes);
     this.nodeCount = new int[availableNodes.size()];
-
   }
 
   @Override
-  public void addNode(Node n) {
-       // Not implemnted yet
+  public void addNode(VM vm) {
+    // Not implemnted yet
     // Wil require a new classification
   }
 
   @Override
-  public void removeNode(Node n) {
-        //Not implemented 
+  public void removeNode(VM vm) {
+    //Not implemented 
     //will require new classification
   }
 
@@ -78,10 +79,10 @@ public class CawaDyn implements Policy, Policy.Callback {
       Vector req = r.requestToVectorH();
       Vector k = null;
       double dist = Double.MAX_VALUE;
-            //gets the closest vector 
+
+      //gets the closest vector 
       // maybe use SF-Curves for reducing search time.
       for (Vector v : protoToNode.keySet()) {
-
         double tmpDist = v.distanceTo(req);
         if (tmpDist < dist) {
           k = v;
@@ -89,8 +90,6 @@ public class CawaDyn implements Policy, Policy.Callback {
         }
       }
       tgt = protoToNode.get(k);
-            //nodeCount[tgt.getId()]++;
-      //return tgt;
 
     }
     if (counter % REQUEST_THRESOLD == 0) {
@@ -103,35 +102,27 @@ public class CawaDyn implements Policy, Policy.Callback {
 
   }
 
-  @Override
-  public void printAdditionnalStats() {
-    //throw new UnsupportedOperationException("Not supported yet.");
-  }
-
   /**
    * Method automatically called when a request is over and returned to the
    * client. Each request execution time and parameter is recorded by this
    * method. When the number of recorded request reaches REQUEST_THRESOLD, the
    * clustering algorithm is launched.
    *
-   * @param n
-   * @param r
+   * @param vm
+   * @param request
    */
   @Override
-  public void receivedRequest(Node n, Request r) {
+  public void receivedRequest(VM vm, Request request) {
 
-        //total du temps d'exéution des requêtes sur un noeud donné
+    //total du temps d'exéution des requêtes sur un noeud donné
     // permettra de calculer les coûts unitaires des requêtes.
-    if (!nodeProcTime.containsKey(n.getId())) {
-      nodeProcTime.put(n.getId(), 0L);
+    if (!nodeProcTime.containsKey(vm.getId())) {
+      nodeProcTime.put(vm.getId(), 0L);
     }
 
-    long stime = r.getFtime() - r.getArTime() - r.getDelay() + nodeProcTime.get(n.getId());
-    nodeProcTime.put(n.getId(), stime);
-        //double cost = ( stime /1000) * ( n.getCost() /3600);
-    //System.out.println("cost " + cost);
-    //r.setCost(cost);
-    requests.add(r);
+    long stime = request.getFtime() - request.getArTime() - request.getDelay() + nodeProcTime.get(vm.getId());
+    nodeProcTime.put(vm.getId(), stime);
+    requests.add(request);
     synchronized (this) {
       if (requests.size() >= REQUEST_THRESOLD) {
 
@@ -153,9 +144,9 @@ public class CawaDyn implements Policy, Policy.Callback {
     double total = 0, tmpc = 0;
     for (Request r : requests) {
       double duration = (double) r.getFtime() - r.getArTime();
-      Node n = nodeList.get(r.getNodeId());
+      VM vm = nodeList.get(r.getNodeId());
       // because the cost is per hour
-      tmpc = getCost(interval, duration, ((ServerNode) n).getCost(), nodeProcTime.get(n.getId()));
+      tmpc = getCost(interval, duration, vm.getCost(), nodeProcTime.get(vm.getId()));
 
       total += tmpc;
       r.setCost(tmpc);
@@ -199,7 +190,7 @@ public class CawaDyn implements Policy, Policy.Callback {
     processCosts();
 
     int nbParams = requests.get(0).getParameters().split("&|=").length / 2;
-    //System.out.println("nb params = " + nbParams);
+
     synchronized (this) {
       System.out.println(" Launching clustering");
       Clustering myClust = new Clustering(
@@ -221,7 +212,7 @@ public class CawaDyn implements Policy, Policy.Callback {
 
       LpSolving lp = new LpSolving(nodeList, costMatrix);
       lp.calculateOptimalExec();
-      //lp.displayOptimalExec();
+
       TreeMap<Vector, Node> tmpVMap = new TreeMap<Vector, Node>();
       for (Node n : nodeList) {
         tmpVMap.put(

@@ -1,15 +1,20 @@
 package org.isep.simizer.example.policy;
 
-import java.util.*;
-import simizer.LBNode;
-import simizer.Node;
-import simizer.ServerNode;
-import simizer.requests.Request;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
 import org.isep.simizer.example.policy.utils.ClusteringRequests;
 import org.isep.simizer.example.policy.utils.LpSolver;
+import simizer.Node;
+import simizer.VM;
+import simizer.requests.Request;
 import simizer.utils.Vector;
 
-public class CostAware implements Policy, Policy.Callback {
+public class CostAware extends Policy.Callback {
 
   public static int REQUEST_THRESOLD = 200;
   public static boolean CLUSTERED = false;
@@ -21,32 +26,31 @@ public class CostAware implements Policy, Policy.Callback {
   private int[] nodeCount;
   // List of recorded requests
   List<Request> requests = new LinkedList<>();
-  //static Random ran = new Random(System.currentTimeMillis());
+
   List<Node> nodeList;
   private int counter = 0;
   private double lastInterval = 0.0D;
 
   @Override
-  public void initialize(List<ServerNode> availableNodes, LBNode f) {
-    f.registerAfter(this);
-    this.nodeList = new ArrayList(availableNodes);
+  public void initialize(List<VM> availableNodes) {
+    this.nodeList = new ArrayList<Node>(availableNodes);
     this.nodeCount = new int[availableNodes.size()];
   }
 
   @Override
-  public void addNode(Node n) {
+  public void addNode(VM vm) {
     synchronized (this) {
-      if (!nodeList.contains(n)) {
-        nodeList.add(n);
+      if (!nodeList.contains(vm)) {
+        nodeList.add(vm);
       }
     }
   }
 
   @Override
-  public void removeNode(Node n) {
+  public void removeNode(VM vm) {
     synchronized (this) {
-      if (nodeList.contains(n)) {
-        nodeList.remove(n);
+      if (nodeList.contains(vm)) {
+        nodeList.remove(vm);
       }
     }
   }
@@ -63,38 +67,32 @@ public class CostAware implements Policy, Policy.Callback {
     return targetNode;
   }
 
-  @Override
-  public void printAdditionnalStats() {
-
-  }
-
   /**
    * Method automatically called when a request is over and returned to the
    * client. Each request execution time and parameter is recorded by this
    * method. When the number of recorded request reaches REQUEST_THRESOLD, the
    * clustering algorithm is launched.
    *
-   * @param n
-   * @param r
+   * @param vm
+   * @param request
    */
   @Override
-  public void receivedRequest(Node n, Request r) {
+  public void receivedRequest(VM vm, Request request) {
 
-    if (!nodeProcTime.containsKey(n.getId())) {
-      nodeProcTime.put(n.getId(), 0L);
+    if (!nodeProcTime.containsKey(vm.getId())) {
+      nodeProcTime.put(vm.getId(), 0L);
     }
 
-    long stime = r.getFtime() - r.getArTime() - r.getDelay() + nodeProcTime.get(n.getId());
-    nodeProcTime.put(n.getId(), stime);
+    long stime = request.getFtime() - request.getArTime() - request.getDelay() + nodeProcTime.get(vm.getId());
+    nodeProcTime.put(vm.getId(), stime);
 
-    requests.add(r);
+    requests.add(request);
     synchronized (this) {
       if (requests.size() >= REQUEST_THRESOLD) {
         launchClustering();
         requests.clear();
         nodeProcTime.clear();
         matrixAvailable();
-
       }
     }
   }
@@ -107,18 +105,16 @@ public class CostAware implements Policy, Policy.Callback {
     Request last = requests.get(requests.size() - 1);
     double[] avgCost = new double[nodeList.size()];
     int[] counts = new int[nodeList.size()];
-        // calculate interval 
 
+    // calculate interval 
     double interval = (double) last.getFtime() - lastInterval;
     lastInterval = last.getFtime();
-    //double interval = (double) (last.getFtime() - first.getArTime());
     System.out.println("interval:" + interval);
     double total = 0, tmpc;
     for (Request r : requests) {
       double duration = (double) r.getFtime() - r.getArTime();
       Node n = nodeList.get(r.getNodeId());
-      tmpc = (duration / 1000) * (((ServerNode) n).getCost() / 3600);
-      //tmpc = getCost(interval, duration, ((ServerNode)n).getCost(), nodeProcTime.get(n.getId()));
+      tmpc = (duration / 1000) * (((VM) n).getCost() / 3600);
       total += tmpc;
       r.setCost(tmpc);
 
@@ -129,22 +125,13 @@ public class CostAware implements Policy, Policy.Callback {
     System.out.println("Observed cost: " + total + " " + Arrays.toString(avgCost));
 
   }
+
   /*
    * Calculate the cost of the given interval according to the hourly cost and the total observed period.
    */
-
   private static double getCost(double interval, double duration, double hCost, long tProcTime) {
-
     double intervalCost = ((interval / 1000) * hCost) / 3600;
-    //System.out.println("tProc: " + tProcTime);
     return (duration / tProcTime) * intervalCost;
-  }
-
-  private void printNodeCount() {
-    for (int i : nodeCount) {
-      System.out.print(i + ",");
-    }
-    System.out.print("\n");
   }
 
   /*
@@ -175,15 +162,12 @@ public class CostAware implements Policy, Policy.Callback {
         myClust.setNbParams(nbParams);
         myClust.setNodeList(nodeList);
       }
-            //myClust.computeClustersWekaMeans();
-      //myClust.computeClustersEKmeans();
-      //myClust.computeClustersHMeans();
       myClust.computeClustersIKmeans();
       double[][] costMatrix = myClust.getCosts();
 
       LpSolver lp = new LpSolver(nodeList, costMatrix);
       lp.calculateOptimalExec();
-      //lp.displayOptimalExec();
+
       TreeMap<Vector, Node> tmpVMap = new TreeMap<>();
       for (Node n : nodeList) {
         Vector v = new Vector(myClust.getCluster(lp.getOptimalExec().get(n.getId()) - 1));
@@ -207,8 +191,6 @@ public class CostAware implements Policy, Policy.Callback {
     double dist = Double.MAX_VALUE;
     if (!CLUSTERED) {
       targetNode = nodeList.get(random.nextInt(nodeList.size()));
-
-      //targetNode = nodeList.get(counter % nodeList.size());
     } else {
       Vector req = r.requestToVectorH();
       Vector k = null;
@@ -223,7 +205,6 @@ public class CostAware implements Policy, Policy.Callback {
       }
       targetNode = protoToNode.get(k);
     }
-    //System.out.println(r.toString() + "==>" + targetNode.getId() + "=" + dist);
     return targetNode;
   }
 
