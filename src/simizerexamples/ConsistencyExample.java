@@ -58,7 +58,7 @@ public class ConsistencyExample {
     VM vmApp0 = new VM(2, null, se1, net, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
     VM vmApp1 = new VM(2, null, se2, net, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
 
-    cp.initialize(null, null);
+    cp.initialize(null);
     //cp.addNode(vmApp0);
     //cp.addNode(vmApp1);
     vm1.deploy(new LoadBalancerApp(0, 20000, cp));
