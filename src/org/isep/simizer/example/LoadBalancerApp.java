@@ -70,7 +70,7 @@ public class LoadBalancerApp extends Application {
       req.setError(1);
       vm.send(req, pending.remove(req.getId()));
     } else {
-      req.setFwdTime(System.nanoTime() - start);
+      req.setLoadBalancingDelayNS(System.nanoTime() - start);
       vm.send(req, target);
     }
 
