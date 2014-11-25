@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.isep.simizer.example.policy.Policy;
 import simizer.Node;
+import simizer.VM;
 import simizer.app.Application;
+import simizer.network.MessageReceiver;
 import simizer.requests.Request;
 
 /**
@@ -41,12 +43,14 @@ public class LoadBalancerApp extends Application {
   public void handle(Node orig, Request req) {
     if (req.getFtime() == 0) { // Registration or application request
       if (req.getParameters().equals("register")) {
-        handleRegisterRequest(orig, req);
+        // if it is registering, it must be a VM
+        handleRegisterRequest((VM) orig, req);
       } else {
         handleAppRequest(orig, req);
       }
     } else {
-      handleResponse(orig, req);
+      // if it is a response, it must be coming from a VM
+      handleResponse((VM) orig, req);
     }
   }
 
@@ -61,7 +65,7 @@ public class LoadBalancerApp extends Application {
     pending.put(req.getId(), orig);
 
     long start = System.nanoTime();
-    Node target = pol.loadBalance(req);
+    MessageReceiver target = pol.loadBalance(req);
     if (target == null) {
       req.setError(1);
       vm.send(req, pending.remove(req.getId()));
@@ -79,7 +83,7 @@ public class LoadBalancerApp extends Application {
    * @param orig
    * @param req
    */
-  public void handleRegisterRequest(Node orig, Request req) {
+  public void handleRegisterRequest(VM orig, Request req) {
     pol.addNode(orig);
   }
 
@@ -90,7 +94,7 @@ public class LoadBalancerApp extends Application {
    * @param orig
    * @param req
    */
-  public void handleResponse(Node orig, Request req) {
+  public void handleResponse(VM orig, Request req) {
     if (pac != null) {
       pac.receivedRequest(orig, req);
     }
