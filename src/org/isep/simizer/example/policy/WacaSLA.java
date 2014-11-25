@@ -2,93 +2,90 @@
 
 package org.isep.simizer.example.policy;
 
-import java.util.*;
-import simizer.LBNode;
-import simizer.Node;
-import simizer.ServerNode;
-import simizer.requests.Request;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import org.isep.simizer.example.policy.utils.CountingFilter;
+import simizer.Node;
+import simizer.VM;
+import simizer.requests.Request;
 
-public class WacaSLA implements Policy, Policy.Callback {
+public class WacaSLA extends Policy.Callback {
 
-  private List<ServerNode> nodeList = null;
+  private List<VM> nodeList = null;
   private Map<Integer, CountingFilter<String>> nodeBloomMap = null;
   private Map<Integer, Integer> histories = null;
-  private Double T_MAX = new Double(250.0);
-  private Map<Integer, Double> avgResponses = new TreeMap<Integer, Double>();
+  private Double T_MAX = 250.0;
+  private Map<Integer, Double> avgResponses = new TreeMap<>();
   private double fp_rate = 1.0 / 10.0;
   private int[] nbRequests;
   private long bloomhits = 0;
 
   @Override
-  public void initialize(List<ServerNode> nodeList, LBNode f) {
-
-    this.nodeList = new LinkedList<ServerNode>(nodeList);
+  public void initialize(List<VM> nodeList) {
+    this.nodeList = new LinkedList<>(nodeList);
 
     synchronized (this) {
-      nodeBloomMap = new HashMap<Integer, CountingFilter<String>>();
-      histories = new TreeMap<Integer, Integer>();
+      nodeBloomMap = new HashMap<>();
+      histories = new TreeMap<>();
       nbRequests = new int[nodeList.size()];
       Arrays.fill(nbRequests, 0);
 
-      for (ServerNode n : nodeList) {
-        Integer nodeId = new Integer(n.getId());
-        nodeBloomMap.put(nodeId, new CountingFilter<String>(n.getCapacity(), fp_rate));
-        histories.put(nodeId, new Integer(0));
-        avgResponses.put(nodeId, new Double(0.0));
-
+      for (VM vm : nodeList) {
+        Integer nodeId = vm.getId();
+        nodeBloomMap.put(nodeId,
+            new CountingFilter<String>(vm.getMaximumActiveRequestsCount(),
+                fp_rate));
+        histories.put(nodeId, 0);
+        avgResponses.put(nodeId, 0.0);
       }
     }
   }
 
   @Override
   public Node loadBalance(Request r) {
-    long time = System.nanoTime();
-    String result = "";
-    ServerNode leastLoaded = null;
-    ServerNode bloomNode = null;
-    //int flag=0;
+    VM leastLoaded = null;
+    VM bloomNode = null;
     String query = r.getParameters();
 
-    Node target = null;
-
-    for (ServerNode n : nodeList) {
-      CountingFilter<String> bf = nodeBloomMap.get(new Integer(n.getId()));
+    for (VM vm : nodeList) {
+      CountingFilter<String> bf = nodeBloomMap.get(vm.getId());
 
       if (bf.contains(query)) {
         if (bloomNode == null) {
-          bloomNode = n;
-        } else if (n.getRequestCount() < bloomNode.getRequestCount());
-        bloomNode = n;
+          bloomNode = vm;
+        } else if (vm.getRequestCount() < bloomNode.getRequestCount());
+        bloomNode = vm;
       } else {
         if (leastLoaded == null) {
-          leastLoaded = n;
+          leastLoaded = vm;
         }
 
-        if (histories.get(new Integer(n.getId()))
-                < histories.get(new Integer(leastLoaded.getId()))) {
-          leastLoaded = n;
-        } else if (n.getRequestCount()
-                < leastLoaded.getRequestCount()) {
-          leastLoaded = n;
+        if (histories.get(vm.getId()) < histories.get(leastLoaded.getId())) {
+          leastLoaded = vm;
+        } else if (vm.getRequestCount() < leastLoaded.getRequestCount()) {
+          leastLoaded = vm;
         }
 
       }
 
     }
 
-    if (bloomNode != null
-            && avgResponses.get(new Integer(bloomNode.getId())) < T_MAX) {
+    Node target;
+    
+    if (bloomNode != null && avgResponses.get(bloomNode.getId()) < T_MAX) {
       target = bloomNode;
       bloomhits++;
     } else {
       target = leastLoaded;
-      Integer tgtId = new Integer(target.getId());
+      Integer tgtId = target.getId();
 
       CountingFilter<String> bf = nodeBloomMap.get(tgtId);
       bf.add(query);
       histories.put(tgtId, histories.get(tgtId) + 1);
-
     }
 
     nbRequests[target.getId()]++;
@@ -98,34 +95,32 @@ public class WacaSLA implements Policy, Policy.Callback {
   }
 
   @Override
-  public void receivedRequest(Node n, Request r) {
-    Integer nodeId = new Integer(n.getId());
-    int coef = nbRequests[nodeId.intValue()];
-    long exetime = r.getFtime() - r.getArTime();
+  public void receivedRequest(VM vm, Request request) {
+    Integer nodeId = vm.getId();
+    int coef = nbRequests[nodeId];
+    long exetime = request.getFtime() - request.getArTime();
 
     double avg = (avgResponses.get(nodeId) * coef + exetime) / (coef + 1);
-    //System.out.println(avg);
-    avgResponses.put(nodeId, new Double(avg));
+    avgResponses.put(nodeId, avg);
+  }
 
+  @Override
+  public void addNode(VM vm) {
+    synchronized (this) {
+      nodeList.add(vm);
+    }
+  }
+
+  @Override
+  public void removeNode(VM vm) {
+    synchronized (this) {
+      nodeList.remove(vm);
+    }
   }
 
   @Override
   public void printAdditionnalStats() {
     System.out.println("Number of bloom hits: " + bloomhits);
-  }
-
-  @Override
-  public void addNode(Node n) {
-    synchronized (this) {
-      nodeList.add((ServerNode) n);
-    }
-  }
-
-  @Override
-  public void removeNode(Node n) {
-    synchronized (this) {
-      nodeList.remove(n);
-    }
   }
 
 }
