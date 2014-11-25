@@ -67,7 +67,7 @@ public class LoadBalancerApp extends Application {
     long start = System.nanoTime();
     MessageReceiver target = pol.loadBalance(req);
     if (target == null) {
-      req.setError(1);
+      req.reportErrors(1);
       vm.send(req, pending.remove(req.getId()));
     } else {
       req.setLoadBalancingDelayNS(System.nanoTime() - start);

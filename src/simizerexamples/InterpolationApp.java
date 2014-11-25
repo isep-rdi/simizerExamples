@@ -60,7 +60,7 @@ public class InterpolationApp extends Application {
              vm.execute(nbInst, 15*KILO*rList.size(), rList);
         }
         else {
-            req.setError(req.getResources().size() - rList.size());
+            req.reportErrors(req.getResources().size() - rList.size());
         }
         
         vm.sendResponse(req, orig);
