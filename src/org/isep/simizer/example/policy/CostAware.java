@@ -83,7 +83,7 @@ public class CostAware extends Policy.Callback {
       nodeProcTime.put(vm.getId(), 0L);
     }
 
-    long stime = request.getServerFinishTimestamp() - request.getClientStartTimestamp() - request.getDelay() + nodeProcTime.get(vm.getId());
+    long stime = request.getServerFinishTimestamp() - request.getClientStartTimestamp() - request.getNetworkDelay() + nodeProcTime.get(vm.getId());
     nodeProcTime.put(vm.getId(), stime);
 
     requests.add(request);
