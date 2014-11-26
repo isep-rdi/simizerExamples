@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.isep.simizer.example.policy.utils.CountingFilter;
-import simizer.Node;
-import simizer.VM;
+import simizer.nodes.Node;
+import simizer.nodes.VM;
 import simizer.requests.Request;
 
 public class WacaSLA extends Policy.Callback {

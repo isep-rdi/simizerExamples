@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import rcaller.RCaller;
 import rcaller.RCode;
-import simizer.Node;
-import simizer.VM;
+import simizer.nodes.Node;
+import simizer.nodes.VM;
 import simizer.requests.Request;
 
 /**

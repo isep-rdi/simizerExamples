@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import rcaller.RCaller;
 import rcaller.RCode;
-import simizer.Node;
-import simizer.VM;
+import simizer.nodes.Node;
+import simizer.nodes.VM;
 
 /**
  *

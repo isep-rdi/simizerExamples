@@ -8,7 +8,7 @@ package org.isep.simizer.example.consistency;
 
 import java.util.List;
 import org.isep.simizer.example.policy.utils.ConsistentHash;
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.requests.Request;
 import simizer.storage.Resource;
 

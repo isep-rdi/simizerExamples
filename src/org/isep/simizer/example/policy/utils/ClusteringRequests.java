@@ -4,7 +4,7 @@ import com.google.code.ekmeans.EKmeans;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.requests.Request;
 import weka.clusterers.Clusterer;
 import weka.clusterers.HierarchicalClusterer;

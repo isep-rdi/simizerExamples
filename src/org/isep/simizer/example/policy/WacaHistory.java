@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.CountingFilter;
-import simizer.VM;
+import simizer.nodes.VM;
 
 public class WacaHistory extends Policy {
 

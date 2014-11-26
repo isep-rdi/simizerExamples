@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.isep.simizer.example.policy.utils.Clustering;
 import org.isep.simizer.example.policy.utils.LpSolving;
-import simizer.Node;
-import simizer.VM;
+import simizer.nodes.Node;
+import simizer.nodes.VM;
 import simizer.requests.Request;
 import simizer.utils.Vector;
 

@@ -1,7 +1,7 @@
 package org.isep.simizer.example.policy;
 
 import java.util.List;
-import simizer.VM;
+import simizer.nodes.VM;
 import simizer.network.MessageReceiver;
 import simizer.requests.Request;
 

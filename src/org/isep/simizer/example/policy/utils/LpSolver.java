@@ -2,7 +2,7 @@ package org.isep.simizer.example.policy.utils;
 
 import java.util.Map;
 import java.util.HashMap;
-import simizer.Node;
+import simizer.nodes.Node;
 import java.util.List;
 
 public class LpSolver {

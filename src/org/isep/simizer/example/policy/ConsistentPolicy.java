@@ -3,7 +3,7 @@ package org.isep.simizer.example.policy;
 import java.util.List;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.ConsistentHash;
-import simizer.VM;
+import simizer.nodes.VM;
 import simizer.network.MessageReceiver;
 
 public class ConsistentPolicy extends Policy {

@@ -1,12 +1,12 @@
 package org.isep.simizer.example.policy;
 
 import java.util.*;
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.BlockBloomFilter;
 import org.isep.simizer.example.policy.utils.Fiboheap;
 import org.isep.simizer.example.policy.utils.Fiboheap.FNode;
-import simizer.VM;
+import simizer.nodes.VM;
 
 public class BlockBasedWaca extends Policy.Callback {
 

@@ -6,7 +6,7 @@ package simizerexamples;
 
 import java.util.ArrayList;
 import java.util.List;
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.app.Application;
 import simizer.requests.Request;
 import simizer.storage.Resource;

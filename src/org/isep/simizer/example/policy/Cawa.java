@@ -3,11 +3,11 @@ package org.isep.simizer.example.policy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.Clustering;
 import org.isep.simizer.example.policy.utils.LpSolving;
-import simizer.VM;
+import simizer.nodes.VM;
 import simizer.utils.SimizerUtils;
 
 /**

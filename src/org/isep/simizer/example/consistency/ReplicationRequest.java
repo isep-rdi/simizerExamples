@@ -6,7 +6,7 @@
 
 package org.isep.simizer.example.consistency;
 
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.requests.Request;
 import simizer.storage.Resource;
 

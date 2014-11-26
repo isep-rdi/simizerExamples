@@ -8,7 +8,7 @@ package org.isep.simizer.example.consistency;
 
 import java.util.HashMap;
 import java.util.Map;
-import simizer.Node;
+import simizer.nodes.Node;
 import simizer.app.Application;
 import simizer.requests.Request;
 import simizer.storage.Resource;
