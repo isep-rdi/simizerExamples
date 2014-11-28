@@ -28,8 +28,9 @@ public class SimizerExamples {
             new GaussianLaw(15),
             new ExponentialLaw(10000, 500.0));
     try {
-      ClientNode.configureRequestFactory(
-              new RequestFactory(RequestFactory.loadRequests("./reqs.csv")));
+      RequestFactory factory = new RequestFactory();
+      factory.loadTemplates("./reqs.csv");
+      ClientNode.configureRequestFactory(factory);
     } catch (IOException ex) {
       Logger.getLogger(SimizerExamples.class.getName()).log(Level.SEVERE, null, ex);
     }

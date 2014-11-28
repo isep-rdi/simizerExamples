@@ -1,6 +1,5 @@
 package org.isep.simizer.tutorial;
 
-import java.util.HashMap;
 import simizer.Simulation;
 import simizer.laws.GaussianLaw;
 import simizer.laws.ConstantLaw;
@@ -53,8 +52,8 @@ public class Tutorial01 {
     // We now need to define the Request that our client will send to the
     // server.  The ClientNode retrieve Requests from templates that are stored
     // in a RequestFactory instance, so let's create one now.
-    RequestFactory factory = new RequestFactory(new HashMap<Integer, Request>());
-    factory.addRequest(1, new Request(0, 0, "p=1", 1000, "read", 0));
+    RequestFactory factory = new RequestFactory();
+    factory.addTemplate(1, new Request(0, 0, "p=1", 1000, "read", 0));
     ClientNode.configureRequestFactory(factory);
 
     // Next, we need to define the behavior of the ClientNode.  All of the
