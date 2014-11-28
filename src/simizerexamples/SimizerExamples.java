@@ -38,15 +38,15 @@ public class SimizerExamples {
     Network net = new Network(new GaussianLaw(15));
 
     //2. machines creation
-    VM vm1 = new VM(1, net);
+    VM vm1 = new VM();
     vm1.deploy(new LoadBalancerApp(0, 20000, new RoundRobin()));
 
     ResourceFactory rf = new ResourceFactory(1000, 2000, 1024);
     StorageElement.setFactory(rf);
 
     //3. Client creation
-    ClientNode cn1 = new ClientNode(4, net, 0);
-    ClientNode cn2 = new ClientNode(5, net, 0);
+    ClientNode cn1 = new ClientNode(0);
+    ClientNode cn2 = new ClientNode(0);
 
     cn1.setServiceAddress(vm1);
     cn2.setServiceAddress(vm1);

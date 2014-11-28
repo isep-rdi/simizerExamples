@@ -41,16 +41,14 @@ public class Tutorial01 {
     // Next let's create our client machine.  We'll use a very simple client
     // that only sends a single request for this first example.
 
-    // When creating a ClientNode, we have to specify four parameters.  The
-    // first is the ID -- each Node (whether a ClientNode or VM) should have its
-    // own unique ID.  The next is a Network -- we'll come back to that later.
-    // The third is the timestamp in the Simulation when the client should
-    // start sending its requests.  Since we want it to start right away, we'll
-    // pass zero for this value.  The final parameter is the one that we care
-    // about.  It's the number of requests that the client should send before
-    // finishing.  In this example, we have it set to 1.  Feel free to adjust
-    // to value and re-run the Simulation to see the results.
-    ClientNode client = new ClientNode(1, null, 0, 1);
+    // When creating a ClientNode, we have to specify two parameters. The first
+    // is the timestamp in the Simulation when the client should start sending
+    // its requests.  Since we want it to start right away, we'll pass zero for
+    // this value.  The final parameter is the one that we care about the most.
+    // It's the number of requests that the client should send before finishing.
+    // In this example, we have it set to 1.  Feel free to adjust the value and
+    // re-run the Simulation to see the results.
+    ClientNode client = new ClientNode(0, 1);
 
     // We now need to define the Request that our client will send to the
     // server.  The ClientNode retrieve Requests from templates that are stored
@@ -86,11 +84,7 @@ public class Tutorial01 {
     // Now that we have the client, let's create a simple server.  The VM class
     // is a general machine that we can use as a server.  To get started, let's
     // create an instance of the class.
-
-    // As was the case with the ClientNode, we need to assign an ID to the
-    // server.  We assign a 2 here so that we don't conflict with the ID of the
-    // client.
-    VM server = new VM(2, null);
+    VM server = new VM();
 
     // Now, we need to establish a way for the client and the server to
     // communicate.  To do that, we'll use a Network.  A network allows messages

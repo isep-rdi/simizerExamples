@@ -49,14 +49,14 @@ public class ConsistencyExample {
     StorageElement se2 = new StorageElement(5120000000L, 10L);
 
     //2. machines creation
-    VM vm1 = new VM(1, net);
+    VM vm1 = new VM();
     ConsistentPolicy cp = new ConsistentPolicy();
     vm1.deploy(new LoadBalancerApp(0, 20000, new ConsistentPolicy()));
 
     OptimisticPolicy.hashRing = new ConsistentHash<>(REP_FACTOR, 1, null);
     PessimisticPolicy.hashRing = new ConsistentHash<>(REP_FACTOR, 1, null);
-    VM vmApp0 = new VM(2, null, se1, net, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
-    VM vmApp1 = new VM(2, null, se2, net, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
+    VM vmApp0 = new VM(null, se1, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
+    VM vmApp1 = new VM(null, se2, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
 
     cp.initialize(null);
     //cp.addNode(vmApp0);
@@ -64,8 +64,8 @@ public class ConsistencyExample {
     vm1.deploy(new LoadBalancerApp(0, 20000, cp));
 
     //3. Client creation
-    ClientNode cn1 = new ClientNode(4, net, 0);
-    ClientNode cn2 = new ClientNode(5, net, 0);
+    ClientNode cn1 = new ClientNode(0);
+    ClientNode cn2 = new ClientNode(0);
 
     cn1.setServiceAddress(vm1);
     cn2.setServiceAddress(vm1);
@@ -91,8 +91,8 @@ public class ConsistencyExample {
         break;
     }
 
-    app1.setConfig("frontend", "1");
-    app2.setConfig("frontend", "1");
+    app1.setConfig("frontend", vm1.getId().toString());
+    app2.setConfig("frontend", vm1.getId().toString());
 
     vmApp0.deploy(app1);
     vmApp1.deploy(app2);
