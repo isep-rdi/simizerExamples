@@ -25,7 +25,7 @@ public class ReplicationRequest extends Request {
      ReplicationRequest(Resource res, Node origin) {
         super("replicate");
         this.data= res;
-        this.type = "replicate";
+        this.action = "replicate";
         this.params= Integer.toString(res.getVersion());
         this.origin = origin;
         

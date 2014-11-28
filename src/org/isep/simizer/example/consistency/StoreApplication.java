@@ -43,7 +43,7 @@ public abstract class StoreApplication extends Application {
     @Override
     public void handle(Node orig, Request req) {
         
-        switch(req.getType()) {
+        switch(req.getAction()) {
             case "read":
                 this.pendingClients.put(req.getId(), orig);
                 this.read(req);
