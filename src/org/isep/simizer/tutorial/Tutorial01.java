@@ -54,7 +54,7 @@ public class Tutorial01 {
     // server.  The ClientNode retrieve Requests from templates that are stored
     // in a RequestFactory instance, so let's create one now.
     RequestFactory factory = new RequestFactory(new HashMap<Integer, Request>());
-    factory.addRequest(new Request(1, 0, 0, "p=1", 1000, "read", 0));
+    factory.addRequest(1, new Request(0, 0, "p=1", 1000, "read", 0));
     ClientNode.configureRequestFactory(factory);
 
     // Next, we need to define the behavior of the ClientNode.  All of the

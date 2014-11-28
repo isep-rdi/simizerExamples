@@ -34,7 +34,7 @@ public class Cawa extends Policy {
         String[] rDesc = req[i].split(";");
 
         queries[i] = new Request(
-                Integer.parseInt(rDesc[0]), //id
+                Long.parseLong(rDesc[0]), //id
                 Integer.parseInt(rDesc[1]), //artime
                 Integer.parseInt(rDesc[4]), //node
                 Float.parseFloat(rDesc[5]), //cost
