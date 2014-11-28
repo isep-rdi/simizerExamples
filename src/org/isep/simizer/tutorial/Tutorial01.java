@@ -133,7 +133,7 @@ public class Tutorial01 {
 
     //     Client Start Timestamp
     //       The timestamp when the client first sends the request.  This (like
-    //       most of the time-based fields) is measure in milliseconds.
+    //       most of the time-based fields) is measured in milliseconds.
 
     //     Params
     //       These are the custom parameters sent with the Request.
