@@ -34,7 +34,7 @@ public class Tutorial01 {
     // Start by creating an instance of the Simulation class.  Throughout the
     // example, we will add other components to the Simulation, and then we will
     // run the Simulation at the end (by calling runSim()).  (If you don't
-    // believe me, jump to line 88 now.)
+    // believe me, jump to line 124 now.)
     Simulation simulation = new Simulation(10000);
 
     // Next let's create our client machine.  We'll use a very simple client
@@ -43,10 +43,10 @@ public class Tutorial01 {
     // When creating a ClientNode, we have to specify two parameters. The first
     // is the timestamp in the Simulation when the client should start sending
     // its requests.  Since we want it to start right away, we'll pass zero for
-    // this value.  The final parameter is the one that we care about the most.
-    // It's the number of requests that the client should send before finishing.
-    // In this example, we have it set to 1.  Feel free to adjust the value and
-    // re-run the Simulation to see the results.
+    // this value.  The next parameter is more important.  It's the number of
+    // requests that the client should send before finishing.  In this example,
+    // we have it set to 1.  Feel free to adjust the value and re-run the
+    // Simulation to see the results.
     ClientNode client = new ClientNode(0, 1);
 
     // We now need to define the Request that our client will send to the
@@ -56,28 +56,33 @@ public class Tutorial01 {
     factory.addTemplate(1, new Request(1, "read", "file=1", true));
     ClientNode.configureRequestFactory(factory);
 
+    // This creates a Request template and stores it in the factory with an ID
+    // of 1.  We'll use that ID to retrieve it in the next step.  We also tell
+    // the clients where they should look for Request templates.
+
     // Next, we need to define the behavior of the ClientNode.  All of the
     // clients are controlled by three Laws.  A Law introduces randomness into
     // the simulation according to a probability distribution.
 
     ClientNode.configureLaws(
-            // The first Law determines which Requests clients will send.  Since
-            // we only put one Request into our RequestFactory, we want to
-            // configure the client to use that Request.  To do that, we can use
-            // a ConstantLaw that always returns the same value.
+            // The first Law determines which Request templates clients will
+            // use.  Since we only put one Request template into our
+            // RequestFactory, we want to configure the client to use that
+            // Request.  To do that, we can use a ConstantLaw that always
+            // returns the same value, in this case 1.
             new ConstantLaw(1),
 
             // The next Law determines how much time clients will spend thinking
             // between each request.  This can be thought of as the amount of
             // time a view spends looking at the result that was returned.
-            // Since we are only sending a single request, it does not matter
-            // which law we use for this value.
+            // Since we are only sending a single request, we can just set this
+            // to a constant value of zero.
             new ConstantLaw(0),
 
             // Finally, this law defines the lifetime of clients.  Since we
             // created our client to send a specific number of requests, this
-            // value is ignored in our Simulation.  We can therefore leave it
-            // as null.
+            // value is ignored in our Simulation.  We can therefore set it to
+            // null.
             null);
 
     // Now that we have the client, let's create a simple server.  The VM class
@@ -120,61 +125,64 @@ public class Tutorial01 {
 
     // Try running this file now to see the results.
 
-    // There should be a single line of output, and it will look something like
-    // this:
+    // There should two lines of output.  Yours will vary depending on the
+    // randomization, but it should look something like this:
 
-    //     0;0;p=1;47;98;0;0;0.0;1r;98;1
+    // Request Client Errors      Start  Duration   N Delay  App Action;Params
+    //       1      1      1          0        80        80    1 read;file=1
 
-    // The Simulation will print each response that a client receives.  In
-    // order, the columns are:
+    // The Simulation will print each response that a client receives.  The
+    // meaning of each column is as follows:
 
-    //     Request ID
-    //       The unique ID assigned to each Request.
+    //     Request
+    //       The unique ID assigned to each Request.  In this example the
+    //       Request got assigned an ID of 1.
 
-    //     Client Start Timestamp
-    //       The timestamp when the client first sends the request.  This (like
-    //       most of the time-based fields) is measured in milliseconds.
+    //     Client
+    //       This is the ID of the client that sent the Request.  In this
+    //       example, it was sent by the client with an ID of 1.
 
-    //     Params
-    //       These are the custom parameters sent with the Request.
-
-    //     Server Finish Timestamp
-    //       This is the timestamp when the server finished processing the
-    //       Request.
-
-    //     Network Delay
-    //       This is the total amount of time the Request spent being sent
-    //       through networks.
-
-    //     Node
-    //       This is the ID of the Node that processed the Request.
-
-    //     Loading Balancing Delay
-    //       This is the amount of time the Request spent being load-balanced.
-    //       It is not used in this example.
-
-    //     Cost
-    //       This is the cost associated with the Request.
-
-    //     Error Count
+    //     Errors
     //       This is the number of errors that occurred while processing the
     //       Request.  You'll notice that there was an error processing this
     //       Request.  That is because we did not provide any code for the
-    //       server that actually handles the Requests.  We'll do that in the
-    //       next example.
+    //       server to actually handle Requests.  We'll address that issue in
+    //       the next example.
 
-    //     Total Roundtrip Time
-    //       This is the total time spent from when the Request was first sent
-    //       to when the response was received by the client.
+    //     Start
+    //       The timestamp when the client first sends the request.  This (like
+    //       most of the time-based fields) is measured in milliseconds.  In
+    //       this example, that value is 0 since we sent the Request right at
+    //       the beginning of the simulation.
 
-    //     Client ID
-    //       This is the ID of the client that sent the Request.
+    //     Duration
+    //       This is the total round-trip duration of the Request.  It is the
+    //       amount of time from when the client sent the Request to when it
+    //       receives its Response.  Here, we can see that this is 80 ms.
+
+    //     N Delay
+    //       This the network delay.  It is a measure of the total amount of
+    //       time the Request spent traveling through networks.  Here, we can
+    //       see that this is 80 ms.  (It is the same as the duration because
+    //       the server spent no time processing the Request.  That's what
+    //       happens when we don't give the server an application to run!)
+
+    //     App
+    //       This is the ID where the Request was sent.  In terms of a URL, this
+    //       could be thought of as the domain name.  For example, we used a
+    //       value of 0.
+
+    //     Action;Params
+    //       This is the action that should be performed, as well as the
+    //       parameters to provide to that action.  In the URL analogy, these
+    //       would be the path and the query parameters (after the ?).  Here, we
+    //       can see that this value is "read;file=1".
 
     // That was a rather large "first example," but there's a lot of basics to
     // cover.  The future examples will add on more features and demonstrate
     // more of the functionality available in the Simizer framework.  They'll
-    // also (hopefully) be a bit shorter since they don't need to provide the
-    // basic details.
+    // also (hopefully) be a bit shorter since they don't need to provide all of
+    // this introductory information.
   }
 
   public static void main(String[] args) throws Exception {
