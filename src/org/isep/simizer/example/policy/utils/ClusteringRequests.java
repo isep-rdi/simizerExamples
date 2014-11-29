@@ -73,7 +73,8 @@ public class ClusteringRequests {
             //reqMat[i][nbParam] = (double)queries[i].getServerFinishTime()-queries[i].getClientStartTimestamp();
             int nodeId = queries[i].getNodeId();
             double curAvg = machineToCost[nodeId];
-            machineToCost[nodeId] = ((curAvg * nodeCount[nodeId]) + queries[i].getCost()) / (nodeCount[nodeId] + 1);
+            Double cost = (Double) queries[i].get("cost");
+            machineToCost[nodeId] = ((curAvg * nodeCount[nodeId]) + cost) / (nodeCount[nodeId] + 1);
             nodeCount[nodeId]++;
         }
         return reqMat;
@@ -316,7 +317,8 @@ public class ClusteringRequests {
                     totalCost = 0;
 
                     if (queries[ clusterToRequest[c][r] ].getNodeId() == m) {
-                        totalCost += queries[ clusterToRequest[c][r]].getCost();
+                        Double cost = (Double) queries[clusterToRequest[c][r]].get("cost");
+                        totalCost += cost;
                     } else {
                         totalCost += machineToCost[m]; 
                     }

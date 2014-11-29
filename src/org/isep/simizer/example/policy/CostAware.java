@@ -116,7 +116,7 @@ public class CostAware extends Policy.Callback {
       Node n = nodeList.get(r.getNodeId());
       tmpc = (duration / 1000) * (((VM) n).getCost() / 3600);
       total += tmpc;
-      r.setCost(tmpc);
+      r.set("cost", tmpc);
 
       avgCost[n.getId()] = ((avgCost[n.getId()] * counts[n.getId()]) + tmpc)
               / (++counts[n.getId()]);

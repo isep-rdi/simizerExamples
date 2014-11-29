@@ -149,7 +149,7 @@ public class CawaDyn extends Policy.Callback {
       tmpc = getCost(interval, duration, vm.getCost(), nodeProcTime.get(vm.getId()));
 
       total += tmpc;
-      r.setCost(tmpc);
+      r.set("cost", tmpc);
     }
     System.out.println("Total cost = " + total);
 
