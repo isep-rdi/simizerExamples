@@ -1,10 +1,14 @@
 # Overview
 
-This project serves as a sort of addendum to the Simizer framework.  It provides examples, an introduction to the Simizer framework in the form of a tutorial, and some very extensive load balancing code.
+This project serves as a sort of addendum to the Simizer framework.  It
+provides examples, an introduction to the Simizer framework in the form
+of a tutorial, and some very extensive load balancing code.
 
 # Framework Introduction
 
-In order to get a feel for the framework before downloading it, the content of the first tutorial is presented below.  It provides a very basic introduction to the framework.
+In order to get a feel for the framework before downloading it, the
+content of the first tutorial is presented below.  It provides a very
+basic introduction to the framework.
 
 ```java
 /**
