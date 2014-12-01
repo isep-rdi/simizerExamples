@@ -1,87 +1,90 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.isep.simizer.example.consistency;
 
 import java.util.HashMap;
 import java.util.Map;
-import simizer.nodes.Node;
 import simizer.app.Application;
+import simizer.nodes.Node;
+import simizer.nodes.VM.TaskScheduler;
 import simizer.requests.Request;
-import simizer.storage.Resource;
 
 /**
  *
  * @author Sylvain Lefebvre
  */
 public abstract class StoreApplication extends Application {
-    protected final Map<Long, Node> pendingClients;
-    public StoreApplication(int id, int memSize) {
-        super(id, memSize);
-        this.pendingClients = new HashMap<>();
-    }
-    
-    /**
-     * Does nothing yet
-     */
-    @Override
-    public void init() {
-        Request registerRequest = new Request("register");
-        registerRequest.setAppId(0);
-        
-        vm.send(registerRequest, 
-                    vm.getNetwork().getNode(Integer.parseInt(config.getProperty("frontend"))));
-    }
-    /**
-     * Dispatches the request to read write or replicate methods
-     * @param orig
-     * @param req 
-     */
-    @Override
-    public void handle(Node orig, Request req) {
-        
-        switch(req.getAction()) {
-            case "read":
-                this.pendingClients.put(req.getId(), orig);
-                this.read(req);
-                break;
-            case "write":
-                this.pendingClients.put(req.getId(), orig);
-                this.write(req);
-                break;
-            case "replicate":
-                if(req instanceof ReplicationRequest) 
-                    this.replicate((ReplicationRequest) req);
-                break;
-                    
+
+  /**
+   * Stores the return addresses for the in-progress {@code Request}s.
+   * <p>
+   * The {@link Node}s where the responses should be sent are stored with a key
+   * that is the ID of the {@link Request}.
+   */
+  protected final Map<Long, Node> pendingRequests;
+
+  public StoreApplication(int id, int memSize) {
+    super(id, memSize);
+    this.pendingRequests = new HashMap<>();
+  }
+
+  /**
+   * Initializes the application, registering with the load balancer.
+   *
+   * @param scheduler the {@link TaskScheduler} where the initialization
+   *            operations should occur
+   */
+  @Override
+  public void init(TaskScheduler scheduler) {
+    Request registerRequest = new Request(0, "", "register");
+
+    Node destination = vm.getNetwork().getNode(
+            Integer.parseInt(config.getProperty("frontend")));
+    scheduler.sendRequest(destination, registerRequest);
+  }
+
+  /**
+   * Dispatches the request to the appropriate application-specific handler.
+   *
+   * @param scheduler the {@link TaskScheduler} where the sequence of actions
+   *            should be built
+   * @param origin the {@link Node} where the {@link Request} originated
+   * @param request the {@link Request} that was sent
+   */
+  @Override
+  public void handle(TaskScheduler scheduler, Node origin, Request request) {
+    switch (request.getAction()) {
+      case "read":
+        this.pendingRequests.put(request.getId(), origin);
+        this.handleRead(scheduler, request);
+        break;
+      case "write":
+        this.pendingRequests.put(request.getId(), origin);
+        this.handleWrite(scheduler, request);
+        break;
+      case "replicate":
+        if (request instanceof ReplicationRequest) {
+          this.replicate(scheduler, (ReplicationRequest) request);
         }
-
-                
+        break;
     }
-    
-     protected void sendResponse(Request r, Resource res) {
-         Node orig = pendingClients.remove(r.getId());
-         vm.sendResponse(r, orig);
-     }
-    
-    
-    
-    protected void write(Resource res) {
-        this.vm.write(res, (int) res.size());
-    }
+  }
 
+  protected void sendResponse(TaskScheduler scheduler, Request request) {
+    Node orig = pendingRequests.remove(request.getId());
+    scheduler.sendResponse(request, orig);
+  }
 
-    public abstract Request read(Request r);
-    public abstract Request write(Request r);
-    /**
-     * Replication message reception
-     * @param r
-     * @return 
-     */
-    public abstract Request replicate(ReplicationRequest r);
-    
+  public abstract Request handleRead(TaskScheduler scheduler, Request request);
+
+  public abstract Request handleWrite(TaskScheduler scheduler, Request request);
+
+  /**
+   * Replication message reception
+   *
+   * @param scheduler
+   * @param request
+   * @return
+   */
+  public abstract Request replicate(TaskScheduler scheduler,
+          ReplicationRequest request);
 
 }

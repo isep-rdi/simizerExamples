@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.isep.simizer.example.consistency;
 
 import java.util.List;
 import org.isep.simizer.example.policy.utils.ConsistentHash;
 import simizer.nodes.Node;
+import simizer.nodes.VM.TaskScheduler;
 import simizer.requests.Request;
 import simizer.storage.Resource;
 
@@ -18,82 +13,97 @@ import simizer.storage.Resource;
  */
 public class OptimisticPolicy extends StoreApplication {
 
-    public static final int REP_FACTOR = 2;
+  public static final int REP_FACTOR = 2;
+
+  public static ConsistentHash<Node> hashRing = null;
+
+  public OptimisticPolicy(int id, int memSize) {
+    super(id, memSize);
+  }
+
+  /**
+   * Initializes, registering in the hash ring.
+   * <p>
+   * Locks the hashRing for addition since it is based on TreeMap which is not
+   * synchronized.  Note that under the current implementation of the framework,
+   * this doesn't really do anything since the application is not
+   * multi-threaded.
+   *
+   * @param scheduler the {@link TaskScheduler} for this operation
+   */
+  @Override
+  public void init(TaskScheduler scheduler) {
+    super.init(scheduler);
     
-    public static ConsistentHash<Node> hashRing = null;
-    
-    public OptimisticPolicy(int id, int memSize) {
-        super(id, memSize);
-        
+    synchronized (hashRing) {
+      hashRing.add(this.vm);
+    }
+  }
+
+  /**
+   * Writes locally without waiting for acknowledgment
+   *
+   * @param scheduler
+   * @param request
+   * @return
+   */
+  @Override
+  public Request handleWrite(TaskScheduler scheduler, Request request) {
+    // Local handleWrite
+    Integer id = request.getResources().get(0);
+    Integer val = new Integer(request.getParameters().split("&|=")[3]);
+    Resource res = scheduler.read(id);
+    if (res == null) {
+      res = new Resource(id);
+      res.setVersion(val);
+    } else if (res.getVersion() < val) {
+      res.setVersion(val);
+    }
+    scheduler.write(res, (int) res.size());
+
+    // asynchronous, we reply before replication
+    sendResponse(scheduler, request);
+
+    List<Node> replicas = hashRing.getList(res.getId());
+    replicas.remove(this.vm);
+    // fire and forget : optimistic approach
+    for (Node node : replicas) {
+      sendReplicationRequest(scheduler, node, res);
     }
 
-    /**
-     * Registers in hashring. Locks the hashring for addition since it is based
-     * on TreeMap which is not synchronized.
-     */
-    @Override
-    public void init() {
-        super.init();
-        synchronized (hashRing) {
-            hashRing.add(this.vm);
-        }
+    return request;
+  }
+
+  @Override
+  public Request handleRead(TaskScheduler scheduler, Request request) {
+    Integer id = request.getResources().get(0);
+    // we ignore the read, but we still want it to occur for timing purposes
+    scheduler.read(id);
+    sendResponse(scheduler, request);
+    return request;
+  }
+
+  @Override
+  public Request replicate(TaskScheduler scheduler,
+          ReplicationRequest request) {
+
+    // apply only if higher,
+    Resource requestResource = request.getResource();
+    Resource localResource = scheduler.read(requestResource.getId());
+    
+    // /!\ must be atomic
+    if (localResource != null && localResource.getVersion() < requestResource.getVersion()) {
+      scheduler.write(requestResource, (int) requestResource.size());
     }
 
-    /**
-     * Writes locally without waiting for acknowledgment
-     *
-     * @param r
-     * @return
-     */
-    @Override
-    public Request write(Request r) {
-        // Local write
-        Integer id = r.getResources().get(0);
-        Integer val = new Integer(r.getParameters().split("&|=")[3]);
-        Resource res = read(id);
-        if (res == null) {
-            res = new Resource(id);
-            res.setVersion(val);
-        } else if (res.getVersion() < val) {
-            res.setVersion(val);
-        }
-        
-        write(res);
-        sendResponse(r, res); // Asynchronous, we reply before replication
-        List<Node> replicas = hashRing.getList(res.getId());
-        replicas.remove(this.vm);
-        // fire and forget : optimistic approach
-        for (Node n : replicas) {
-            sendReplicationRequest(n, res);            
-        }        
-        
-        return r;
-    }
-    
-    @Override
-    public Request read(Request r) {
-        Integer id = r.getResources().get(0);
-        Resource res = read(id);
-        sendResponse(r, res);
-        return r;
-    }
-    
-    @Override
-    public Request replicate(ReplicationRequest r) {
-        // apply only if higher,
-       Resource resRep = r.getResource();
-       Resource resLocal = read(resRep.getId());
-        // /!\ must be atomic
-        if (resLocal != null && resLocal.getVersion() < resRep.getVersion()) {
-             write(resRep);
-        }
-       
-        return r;
-    }
-    protected void sendReplicationRequest(Node n, Resource res) {
-          Request req = new ReplicationRequest(res);
-          req.setAppId(super.getId());
-          req.setClientStartTimestamp(vm.getClock());
-          this.sendOneWay(n, req);
-      }
+    return request;
+  }
+
+  protected void sendReplicationRequest(TaskScheduler scheduler, Node node,
+          Resource resource) {
+
+    Request request = new ReplicationRequest(getId(), resource);
+    request.setClientStartTimestamp(vm.getClock());
+    scheduler.sendOneWay(node, request);
+  }
 }

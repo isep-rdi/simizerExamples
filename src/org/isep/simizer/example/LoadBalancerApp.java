@@ -7,6 +7,7 @@ import simizer.nodes.Node;
 import simizer.nodes.VM;
 import simizer.app.Application;
 import simizer.network.MessageReceiver;
+import simizer.nodes.VM.TaskScheduler;
 import simizer.requests.Request;
 
 /**
@@ -40,13 +41,13 @@ public class LoadBalancerApp extends Application {
    */
 
   @Override
-  public void handle(Node orig, Request req) {
+  public void handle(TaskScheduler scheduler, Node orig, Request req) {
     if (req.getServerFinishTimestamp() == 0) { // Registration or application request
       if (req.getParameters().equals("register")) {
         // if it is registering, it must be a VM
         handleRegisterRequest((VM) orig, req);
       } else {
-        handleAppRequest(orig, req);
+        handleAppRequest(scheduler, orig, req);
       }
     } else {
       // if it is a response, it must be coming from a VM
@@ -58,20 +59,21 @@ public class LoadBalancerApp extends Application {
    * Called if the request is an application request, applies the specified load
    * balancing policy and records the client for sending the response.
    *
+   * @param scheduler
    * @param orig
    * @param req
    */
-  public void handleAppRequest(Node orig, Request req) {
+  public void handleAppRequest(TaskScheduler scheduler, Node orig, Request req) {
     pending.put(req.getId(), orig);
 
     long start = System.nanoTime();
-    MessageReceiver target = pol.loadBalance(req);
+    Node target = (Node) pol.loadBalance(req);
     if (target == null) {
       req.reportErrors(1);
-      vm.send(req, pending.remove(req.getId()));
+      scheduler.sendResponse(req, pending.remove(req.getId()));
     } else {
       req.set("loadBalancingDelay", System.nanoTime() - start);
-      vm.send(req, target);
+      scheduler.sendRequest(target, req);
     }
 
   }
@@ -104,7 +106,6 @@ public class LoadBalancerApp extends Application {
   }
 
   @Override
-  public void init() {
-  }
+  public void init(TaskScheduler scheduler) {}
 
 }
