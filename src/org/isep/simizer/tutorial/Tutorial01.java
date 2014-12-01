@@ -97,10 +97,10 @@ public class Tutorial01 {
     // Here, we create the "internet" Network.  When creating the Network, we
     // specify a Law that defines how much delay should be added to requests
     // when they pass through the Network.  In this case, we are using a
-    // Gaussian (normal) distribution with an upper-bound of 60.  {TODO}  You
-    // will find that Law instances are used throughout the simulation to add
-    // customizable randomness.
-    Network internet = new Network(new GaussianLaw(60));
+    // Gaussian (normal) distribution with a mean of 60 ms and a standard
+    // deviation of 10 ms.  You will find that Law instances are used throughout
+    // the simulation to add customizable randomness.
+    Network internet = new Network(new GaussianLaw(60, 10));
 
     // Finally, we need to connect everything up so that all of the various
     // elements know about each other.

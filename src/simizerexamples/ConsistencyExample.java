@@ -29,9 +29,9 @@ public class ConsistencyExample {
   public static void main(String... args) {
 
     ClientNode.configureLaws(
-            new GaussianLaw(15),
-            new GaussianLaw(15),
-            new ExponentialLaw(10000, 500.0));
+            new GaussianLaw(7),  // previous upper bound was 15
+            new GaussianLaw(7),  // previous upper bound was 15
+            new ExponentialLaw(500.0));  // previous upper bound was 10000
     try {
       RequestFactory factory = new RequestFactory();
       factory.loadTemplates("./readwrite.csv");
@@ -41,7 +41,7 @@ public class ConsistencyExample {
     }
 
     //1. Network creation
-    Network net = new Network(new GaussianLaw(15));
+    Network net = new Network(new GaussianLaw(7));  // previous upper bound was 15
 
     //3. Create disks:
     ResourceFactory rf = new ResourceFactory(1000, 2000, 1024);
