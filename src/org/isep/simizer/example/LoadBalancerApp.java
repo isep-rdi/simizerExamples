@@ -3,12 +3,12 @@ package org.isep.simizer.example;
 import java.util.HashMap;
 import java.util.Map;
 import org.isep.simizer.example.policy.Policy;
-import simizer.nodes.Node;
-import simizer.nodes.VM;
-import simizer.app.Application;
-import simizer.network.MessageReceiver;
-import simizer.nodes.VM.TaskScheduler;
-import simizer.requests.Request;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.app.Application;
+import fr.isep.simizer.network.MessageReceiver;
+import fr.isep.simizer.nodes.VM.TaskScheduler;
+import fr.isep.simizer.requests.Request;
 
 /**
  * Class for handling and applying load balancing policies. Nodes register to

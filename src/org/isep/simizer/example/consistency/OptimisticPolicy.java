@@ -2,10 +2,10 @@ package org.isep.simizer.example.consistency;
 
 import java.util.List;
 import org.isep.simizer.example.policy.utils.ConsistentHash;
-import simizer.nodes.Node;
-import simizer.nodes.VM.TaskScheduler;
-import simizer.requests.Request;
-import simizer.storage.Resource;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM.TaskScheduler;
+import fr.isep.simizer.requests.Request;
+import fr.isep.simizer.storage.Resource;
 
 /**
  *

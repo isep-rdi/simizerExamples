@@ -3,12 +3,12 @@ package org.isep.simizer.example.policy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import simizer.nodes.Node;
-import simizer.requests.Request;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.requests.Request;
 import org.isep.simizer.example.policy.utils.Clustering;
 import org.isep.simizer.example.policy.utils.LpSolving;
-import simizer.nodes.VM;
-import simizer.utils.SimizerUtils;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.utils.SimizerUtils;
 
 /**
  * run ./5nodes.json ./reqDescription_v1.csv ./workload_gene_v1.csv ./test lbsim.policies.CawaDyn

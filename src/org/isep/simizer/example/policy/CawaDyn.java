@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.isep.simizer.example.policy.utils.Clustering;
 import org.isep.simizer.example.policy.utils.LpSolving;
-import simizer.nodes.Node;
-import simizer.nodes.VM;
-import simizer.requests.Request;
-import simizer.utils.Vector;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
+import fr.isep.simizer.utils.Vector;
 
 /**
  * This class implements the Cost AWare Algorithm for cost based request

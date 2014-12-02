@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.isep.simizer.example.LoadBalancerApp;
-import simizer.nodes.ClientNode;
-import simizer.Simulation;
-import simizer.nodes.VM;
-import simizer.laws.ExponentialLaw;
-import simizer.laws.GaussianLaw;
-import simizer.network.Network;
+import fr.isep.simizer.nodes.ClientNode;
+import fr.isep.simizer.Simulation;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.laws.ExponentialLaw;
+import fr.isep.simizer.laws.GaussianLaw;
+import fr.isep.simizer.network.Network;
 import org.isep.simizer.example.policy.RoundRobin;
-import simizer.requests.RequestFactory;
-import simizer.storage.ResourceFactory;
-import simizer.storage.StorageElement;
+import fr.isep.simizer.requests.RequestFactory;
+import fr.isep.simizer.storage.ResourceFactory;
+import fr.isep.simizer.storage.StorageElement;
 
 /**
  *

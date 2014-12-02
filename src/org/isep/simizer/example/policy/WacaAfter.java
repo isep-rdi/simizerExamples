@@ -1,9 +1,9 @@
 package org.isep.simizer.example.policy;
 
 import java.util.List;
-import simizer.nodes.Node;
-import simizer.nodes.VM;
-import simizer.requests.Request;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
 
 public class WacaAfter extends Policy.Callback {
 

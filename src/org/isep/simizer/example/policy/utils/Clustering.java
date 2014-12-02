@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import rcaller.RCaller;
 import rcaller.RCode;
-import simizer.nodes.Node;
-import simizer.nodes.VM;
-import simizer.requests.Request;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
 
 /**
  *

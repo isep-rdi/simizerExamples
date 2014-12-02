@@ -1,17 +1,17 @@
 package org.isep.simizer.tutorial;
 
-import simizer.Simulation;
-import simizer.app.Application;
-import simizer.laws.ConstantLaw;
-import simizer.laws.GaussianLaw;
-import simizer.laws.UniformLaw;
-import simizer.network.Network;
-import simizer.nodes.ClientNode;
-import simizer.nodes.Node;
-import simizer.nodes.VM;
-import simizer.requests.Request;
-import simizer.requests.RequestFactory;
-import simizer.storage.StorageElement;
+import fr.isep.simizer.Simulation;
+import fr.isep.simizer.app.Application;
+import fr.isep.simizer.laws.ConstantLaw;
+import fr.isep.simizer.laws.GaussianLaw;
+import fr.isep.simizer.laws.UniformLaw;
+import fr.isep.simizer.network.Network;
+import fr.isep.simizer.nodes.ClientNode;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
+import fr.isep.simizer.requests.RequestFactory;
+import fr.isep.simizer.storage.StorageElement;
 
 /**
  * Welcome to the second tutorial!

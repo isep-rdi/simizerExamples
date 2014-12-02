@@ -9,16 +9,16 @@ import static org.isep.simizer.example.consistency.OptimisticPolicy.REP_FACTOR;
 import org.isep.simizer.example.consistency.PessimisticPolicy;
 import org.isep.simizer.example.policy.ConsistentPolicy;
 import org.isep.simizer.example.policy.utils.ConsistentHash;
-import simizer.nodes.ClientNode;
-import simizer.Simulation;
-import simizer.nodes.VM;
-import simizer.app.Application;
-import simizer.laws.ExponentialLaw;
-import simizer.laws.GaussianLaw;
-import simizer.network.Network;
-import simizer.requests.RequestFactory;
-import simizer.storage.ResourceFactory;
-import simizer.storage.StorageElement;
+import fr.isep.simizer.nodes.ClientNode;
+import fr.isep.simizer.Simulation;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.app.Application;
+import fr.isep.simizer.laws.ExponentialLaw;
+import fr.isep.simizer.laws.GaussianLaw;
+import fr.isep.simizer.network.Network;
+import fr.isep.simizer.requests.RequestFactory;
+import fr.isep.simizer.storage.ResourceFactory;
+import fr.isep.simizer.storage.StorageElement;
 
 /**
  *

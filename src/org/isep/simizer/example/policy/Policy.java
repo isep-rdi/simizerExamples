@@ -1,9 +1,9 @@
 package org.isep.simizer.example.policy;
 
 import java.util.List;
-import simizer.nodes.VM;
-import simizer.network.MessageReceiver;
-import simizer.requests.Request;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.network.MessageReceiver;
+import fr.isep.simizer.requests.Request;
 
 public abstract class Policy {
 

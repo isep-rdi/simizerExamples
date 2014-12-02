@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import simizer.nodes.Node;
-import simizer.nodes.VM;
-import simizer.network.MessageReceiver;
-import simizer.requests.Request;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.network.MessageReceiver;
+import fr.isep.simizer.requests.Request;
 
 public class LeastLoadedPolicy extends Policy.Callback {
 

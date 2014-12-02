@@ -1,8 +1,8 @@
 package org.isep.simizer.example.consistency;
 
-import simizer.nodes.Node;
-import simizer.requests.Request;
-import simizer.storage.Resource;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.requests.Request;
+import fr.isep.simizer.storage.Resource;
 
 /**
  *
