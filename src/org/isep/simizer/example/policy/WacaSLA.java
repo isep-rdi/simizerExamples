@@ -49,7 +49,7 @@ public class WacaSLA extends Policy.Callback {
   public Node loadBalance(Request r) {
     VM leastLoaded = null;
     VM bloomNode = null;
-    String query = r.getParameters();
+    String query = r.getQuery();
 
     for (VM vm : nodeList) {
       CountingFilter<String> bf = nodeBloomMap.get(vm.getId());

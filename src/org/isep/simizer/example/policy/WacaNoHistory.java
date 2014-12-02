@@ -43,7 +43,7 @@ public class WacaNoHistory extends Policy {
   public Node loadBalance(Request r) {
     VM leastLoaded = null;
     VM bloomNode = null;
-    String query = r.getParameters();
+    String query = r.getQuery();
 
 
     for (VM vm : nodeList) {

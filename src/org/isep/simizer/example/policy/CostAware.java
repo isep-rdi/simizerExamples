@@ -149,7 +149,9 @@ public class CostAware extends Policy.Callback {
 
     processCosts();
 
-    int nbParams = requests.get(0).getParameters().split("&|=").length / 2;
+    // Max: Changed to split into groups of parameters so that we don't need to
+    // divide by two.
+    int nbParams = requests.get(0).getQuery().split("&").length;
     synchronized (this) {
       if (myClust == null) {
         myClust = new ClusteringRequests(

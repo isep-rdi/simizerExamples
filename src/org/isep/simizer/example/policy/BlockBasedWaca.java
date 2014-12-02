@@ -54,7 +54,7 @@ public class BlockBasedWaca extends Policy.Callback {
     VM target = null;
 
     // 1. Hash request
-    int[] hash = hash(request.getParameters(), kMax);
+    int[] hash = hash(request.getQuery(), kMax);
     int firstB = hash[0] % mMax;
 
     // 2. Check if the first Block is indexed

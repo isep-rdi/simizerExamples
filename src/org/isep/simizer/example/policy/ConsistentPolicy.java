@@ -34,7 +34,7 @@ public class ConsistentPolicy extends Policy {
    */
   @Override
   public MessageReceiver loadBalance(Request request) {
-    return ch.get(request.getParameters().split("=")[1]);
+    return ch.get(Integer.toString(request.getResources().get(0)));
   }
 
   @Override

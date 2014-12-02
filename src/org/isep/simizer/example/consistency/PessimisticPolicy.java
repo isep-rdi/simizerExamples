@@ -63,7 +63,7 @@ public class PessimisticPolicy extends StoreApplication {
   public Request handleWrite(TaskScheduler scheduler, Request request) {
     // Local handleWrite
     Integer id = request.getResources().get(0);
-    Integer val = new Integer(request.getParameters().split("&|=")[3]);
+    Integer val = new Integer(request.getParameter("val"));
     Resource resource = scheduler.read(id);
     if (resource == null) {
       resource = new Resource(id);

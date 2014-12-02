@@ -18,7 +18,7 @@ public class ReplicationRequest extends Request {
   }
 
   ReplicationRequest(Integer applicationId, Resource resource, Node origin) {
-    super(applicationId, "replicate", Integer.toString(resource.getVersion()));
+    super(applicationId, "replicate", "");
     
     this.data = resource;
     this.origin = origin;

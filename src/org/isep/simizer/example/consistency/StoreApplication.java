@@ -34,7 +34,7 @@ public abstract class StoreApplication extends Application {
    */
   @Override
   public void init(TaskScheduler scheduler) {
-    Request registerRequest = new Request(0, "", "register");
+    Request registerRequest = new Request(0, "register", "");
 
     Node destination = vm.getNetwork().getNode(
             Integer.parseInt(config.getProperty("frontend")));

@@ -43,7 +43,7 @@ public class LoadBalancerApp extends Application {
   @Override
   public void handle(TaskScheduler scheduler, Node orig, Request req) {
     if (req.getServerFinishTimestamp() == 0) { // Registration or application request
-      if (req.getParameters().equals("register")) {
+      if (req.getAction().equals("register")) {
         // if it is registering, it must be a VM
         handleRegisterRequest((VM) orig, req);
       } else {

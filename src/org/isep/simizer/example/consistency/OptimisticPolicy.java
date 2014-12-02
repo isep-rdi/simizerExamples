@@ -51,7 +51,7 @@ public class OptimisticPolicy extends StoreApplication {
   public Request handleWrite(TaskScheduler scheduler, Request request) {
     // Local handleWrite
     Integer id = request.getResources().get(0);
-    Integer val = new Integer(request.getParameters().split("&|=")[3]);
+    Integer val = new Integer(request.getParameter("val"));
     Resource res = scheduler.read(id);
     if (res == null) {
       res = new Resource(id);

@@ -45,7 +45,7 @@ public class WacaHistory extends Policy {
     VM leastLoaded = null;
     VM bloomNode = null;
 
-    String query = r.getParameters();
+    String query = r.getQuery();
 
     for (VM vm : nodeList) {
       CountingFilter<String> bf = nodeBloomMap.get(vm.getId());
