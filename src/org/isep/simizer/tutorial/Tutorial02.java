@@ -101,7 +101,7 @@ public class Tutorial02 {
             break;
         }
 
-        scheduler.execute(instructions, (int) StorageElement.MEGABYTE, null);
+        scheduler.execute(instructions, StorageElement.MEGABYTE, null);
         scheduler.sendResponse(request, origin);
       }
     };

@@ -72,7 +72,7 @@ public class PessimisticPolicy extends StoreApplication {
       resource.setVersion(val);
     }
 
-    scheduler.write(resource, (int) resource.size());
+    scheduler.write(resource, resource.size());
 
     List<Node> replicas = hashRing.getList(resource.getId());
     replicas.remove(this.vm);
@@ -93,7 +93,7 @@ public class PessimisticPolicy extends StoreApplication {
     Resource localResource = scheduler.read(requestResource.getId());
     // /!\ must be atomic
     if (localResource == null || localResource.getVersion() < requestResource.getVersion()) {
-      scheduler.write(requestResource, (int) requestResource.size());
+      scheduler.write(requestResource, requestResource.size());
     }
     sendResponse(scheduler, request);
     return request;

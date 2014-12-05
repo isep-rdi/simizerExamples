@@ -41,7 +41,7 @@ public class Tutorial03 {
     // to set up a hard drive with our Resources.  To do this, let's start by
     // creating a ResourceFactory, which is responsible for supplying Resource
     // templates to the disk.
-    ResourceFactory resources = new ResourceFactory((int) StorageElement.KILOBYTE);
+    ResourceFactory resources = new ResourceFactory(StorageElement.KILOBYTE);
 
     // We created a resource factory with 10 resources that each have a size of
     // 1 KB.  These Resources are referenced starting from zero.
@@ -116,7 +116,7 @@ public class Tutorial03 {
 
 
         int difference = endID - startID;
-        scheduler.execute(1_000_000 * difference * difference, (int) StorageElement.KILOBYTE, null);
+        scheduler.execute(1_000_000 * difference * difference, StorageElement.KILOBYTE, null);
 
         // Finally, let's send the result back to the client.
         scheduler.sendResponse(request, origin);

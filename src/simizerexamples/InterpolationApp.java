@@ -43,7 +43,7 @@ public class InterpolationApp extends Application {
     List<Resource> rList = new ArrayList<>();
 
     for (Integer rId : req.getResources()) {
-      Resource r = scheduler.read(rId, (int) (15 * StorageElement.KILOBYTE));
+      Resource r = scheduler.read(rId, (15 * StorageElement.KILOBYTE));
       if (r != null) {
         rList.add(r);
       }
@@ -52,7 +52,7 @@ public class InterpolationApp extends Application {
     // If some files don't exist we send an error back to the client.
     if (rList.size() == req.getResources().size()) {
       long nbInst = 24 * 15 * 1500 * rList.size();
-      int memSize = 15 * (int) StorageElement.KILOBYTE * rList.size();
+      long memSize = 15 * StorageElement.KILOBYTE * rList.size();
       scheduler.execute(nbInst, memSize, rList);
     } else {
       req.reportErrors(req.getResources().size() - rList.size());

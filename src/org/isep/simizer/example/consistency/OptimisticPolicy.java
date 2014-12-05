@@ -59,7 +59,7 @@ public class OptimisticPolicy extends StoreApplication {
     } else if (res.getVersion() < val) {
       res.setVersion(val);
     }
-    scheduler.write(res, (int) res.size());
+    scheduler.write(res, res.size());
 
     // asynchronous, we reply before replication
     sendResponse(scheduler, request);
@@ -93,7 +93,7 @@ public class OptimisticPolicy extends StoreApplication {
     
     // /!\ must be atomic
     if (localResource != null && localResource.getVersion() < requestResource.getVersion()) {
-      scheduler.write(requestResource, (int) requestResource.size());
+      scheduler.write(requestResource, requestResource.size());
     }
 
     return request;
