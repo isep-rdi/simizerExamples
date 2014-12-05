@@ -44,8 +44,7 @@ public class ConsistencyExample {
     Network net = new Network(new GaussianLaw(7));  // previous upper bound was 15
 
     //3. Create disks:
-    ResourceFactory rf = new ResourceFactory(1000, 2000, 1024);
-    StorageElement.setFactory(rf);
+    ResourceFactory rf = new ResourceFactory(1024, 1000);
     StorageElement se1 = new StorageElement(5120000000L, 10L);
     StorageElement se2 = new StorageElement(5120000000L, 10L);
 

@@ -13,7 +13,6 @@ import fr.isep.simizer.network.Network;
 import org.isep.simizer.example.policy.RoundRobin;
 import fr.isep.simizer.requests.RequestFactory;
 import fr.isep.simizer.storage.ResourceFactory;
-import fr.isep.simizer.storage.StorageElement;
 
 /**
  *
@@ -42,8 +41,7 @@ public class SimizerExamples {
     VM vm1 = new VM();
     vm1.deploy(new LoadBalancerApp(0, 20000, new RoundRobin()));
 
-    ResourceFactory rf = new ResourceFactory(1000, 2000, 1024);
-    StorageElement.setFactory(rf);
+    ResourceFactory rf = new ResourceFactory(1024, 1000);
 
     //3. Client creation
     ClientNode cn1 = new ClientNode(0);
