@@ -53,10 +53,6 @@ public class SimizerExamples {
     Simulation sim = new Simulation(20000);
     sim.toNetworkAddNodes(net, vm1, cn1, cn2);
 
-    try {
-      sim.runSim();
-    } catch (Exception ex) {
-      Logger.getLogger(SimizerExamples.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    sim.runSim();
   }
 }

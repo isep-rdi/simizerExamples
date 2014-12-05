@@ -24,7 +24,7 @@ import fr.isep.simizer.storage.StorageElement;
  * by creating a subclass of the Application class.
  */
 public class Tutorial02 {
-  private static void run() throws Exception {
+  private static void run() {
     // Let's go ahead and create some of the objects that we had in the last
     // simulation.  We'll keep it simple with just a single client and server,
     // but we'll have the client send multiple requests this time.
@@ -137,7 +137,7 @@ public class Tutorial02 {
     // objects.
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     run();
   }
 }

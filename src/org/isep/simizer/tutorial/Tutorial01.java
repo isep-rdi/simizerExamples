@@ -30,7 +30,7 @@ import fr.isep.simizer.requests.RequestFactory;
  */
 public class Tutorial01 {
 
-  private static void run() throws Exception {
+  private static void run() {
     // Start by creating an instance of the Simulation class.  Throughout the
     // example, we will add other components to the Simulation, and then we will
     // run the Simulation at the end (by calling runSim()).  (If you don't
@@ -185,7 +185,7 @@ public class Tutorial01 {
     // this introductory information.
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     run();
   }
 }

@@ -32,7 +32,7 @@ import fr.isep.simizer.storage.StorageElement;
  * Let's get started.
  */
 public class Tutorial03 {
-  private static void run() throws Exception {
+  private static void run() {
     // Let's create the basic elements that we've used in the other tutorials.
     Simulation simulation = new Simulation(10000);
 
@@ -167,7 +167,7 @@ public class Tutorial03 {
     // clients to send Requests.
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     run();
   }
 }

@@ -97,11 +97,6 @@ public class ConsistencyExample {
     vmApp0.deploy(app1);
     vmApp1.deploy(app2);
 
-    try {
-      sim.runSim();
-    } catch (Exception ex) {
-      Logger.getLogger(SimizerExamples.class.getName()).log(Level.SEVERE, null, ex);
-    }
-
+    sim.runSim();
   }
 }
