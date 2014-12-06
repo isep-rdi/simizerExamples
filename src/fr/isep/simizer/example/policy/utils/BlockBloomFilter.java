@@ -4,7 +4,6 @@
  */
 package fr.isep.simizer.example.policy.utils;
 
-import java.util.Arrays;
 import java.util.BitSet;
 
 /**

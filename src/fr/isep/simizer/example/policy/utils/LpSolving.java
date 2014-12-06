@@ -1,12 +1,12 @@
 package fr.isep.simizer.example.policy.utils;
 
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import rcaller.RCaller;
 import rcaller.RCode;
-import fr.isep.simizer.nodes.Node;
-import fr.isep.simizer.nodes.VM;
 
 /**
  *

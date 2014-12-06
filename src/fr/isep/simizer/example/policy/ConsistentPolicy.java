@@ -1,10 +1,10 @@
 package fr.isep.simizer.example.policy;
 
-import java.util.List;
-import fr.isep.simizer.requests.Request;
 import fr.isep.simizer.example.policy.utils.ConsistentHash;
-import fr.isep.simizer.nodes.VM;
 import fr.isep.simizer.network.MessageReceiver;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
+import java.util.List;
 
 public class ConsistentPolicy extends Policy {
 

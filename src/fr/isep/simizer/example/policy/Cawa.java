@@ -1,14 +1,14 @@
 package fr.isep.simizer.example.policy;
 
+import fr.isep.simizer.example.policy.utils.Clustering;
+import fr.isep.simizer.example.policy.utils.LpSolving;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
+import fr.isep.simizer.utils.SimizerUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import fr.isep.simizer.nodes.Node;
-import fr.isep.simizer.requests.Request;
-import fr.isep.simizer.example.policy.utils.Clustering;
-import fr.isep.simizer.example.policy.utils.LpSolving;
-import fr.isep.simizer.nodes.VM;
-import fr.isep.simizer.utils.SimizerUtils;
 
 /**
  * run ./5nodes.json ./reqDescription_v1.csv ./workload_gene_v1.csv ./test lbsim.policies.CawaDyn

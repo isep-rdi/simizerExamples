@@ -1,13 +1,13 @@
 package simizerexamples;
 
-import java.util.ArrayList;
-import java.util.List;
-import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.app.Application;
+import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.nodes.VM.TaskScheduler;
 import fr.isep.simizer.requests.Request;
 import fr.isep.simizer.storage.Resource;
 import fr.isep.simizer.storage.StorageElement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InterpolationApp extends Application {
 

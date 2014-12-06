@@ -1,17 +1,17 @@
 package fr.isep.simizer.example.policy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import fr.isep.simizer.example.policy.utils.Clustering;
 import fr.isep.simizer.example.policy.utils.LpSolving;
 import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.nodes.VM;
 import fr.isep.simizer.requests.Request;
 import fr.isep.simizer.utils.Vector;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * This class implements the Cost AWare Algorithm for cost based request

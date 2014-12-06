@@ -2,14 +2,14 @@
 
 package fr.isep.simizer.example.policy;
 
+import fr.isep.simizer.example.policy.utils.CountingFilter;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import fr.isep.simizer.nodes.Node;
-import fr.isep.simizer.requests.Request;
-import fr.isep.simizer.example.policy.utils.CountingFilter;
-import fr.isep.simizer.nodes.VM;
 
 public class WacaHistory extends Policy {
 

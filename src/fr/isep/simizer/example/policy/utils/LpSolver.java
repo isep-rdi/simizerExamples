@@ -1,9 +1,9 @@
 package fr.isep.simizer.example.policy.utils;
 
-import java.util.Map;
-import java.util.HashMap;
 import fr.isep.simizer.nodes.Node;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LpSolver {
     double[][] costMatrix;

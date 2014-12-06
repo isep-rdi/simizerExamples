@@ -1,15 +1,22 @@
 package fr.isep.simizer.example.policy.utils;
 
 import com.google.code.ekmeans.EKmeans;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.requests.Request;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import weka.clusterers.Clusterer;
 import weka.clusterers.HierarchicalClusterer;
 import weka.clusterers.SimpleKMeans;
-import weka.core.*;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.SelectedTag;
 
 public class ClusteringRequests {
 

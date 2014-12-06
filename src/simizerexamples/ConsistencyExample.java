@@ -1,24 +1,24 @@
 package simizerexamples;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import fr.isep.simizer.Simulation;
+import fr.isep.simizer.app.Application;
 import fr.isep.simizer.example.LoadBalancerApp;
 import fr.isep.simizer.example.consistency.OptimisticPolicy;
 import static fr.isep.simizer.example.consistency.OptimisticPolicy.REP_FACTOR;
 import fr.isep.simizer.example.consistency.PessimisticPolicy;
 import fr.isep.simizer.example.policy.ConsistentPolicy;
 import fr.isep.simizer.example.policy.utils.ConsistentHash;
-import fr.isep.simizer.nodes.ClientNode;
-import fr.isep.simizer.Simulation;
-import fr.isep.simizer.nodes.VM;
-import fr.isep.simizer.app.Application;
 import fr.isep.simizer.laws.ExponentialLaw;
 import fr.isep.simizer.laws.GaussianLaw;
 import fr.isep.simizer.network.Network;
+import fr.isep.simizer.nodes.ClientNode;
+import fr.isep.simizer.nodes.VM;
 import fr.isep.simizer.requests.RequestFactory;
 import fr.isep.simizer.storage.ResourceFactory;
 import fr.isep.simizer.storage.StorageElement;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *

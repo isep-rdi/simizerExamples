@@ -1,14 +1,13 @@
 package fr.isep.simizer.example;
 
-import java.util.HashMap;
-import java.util.Map;
+import fr.isep.simizer.app.Application;
 import fr.isep.simizer.example.policy.Policy;
 import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.nodes.VM;
-import fr.isep.simizer.app.Application;
-import fr.isep.simizer.network.MessageReceiver;
 import fr.isep.simizer.nodes.VM.TaskScheduler;
 import fr.isep.simizer.requests.Request;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class for handling and applying load balancing policies. Nodes register to

@@ -1,5 +1,11 @@
 package fr.isep.simizer.example.policy;
 
+import fr.isep.simizer.example.policy.utils.ClusteringRequests;
+import fr.isep.simizer.example.policy.utils.LpSolver;
+import fr.isep.simizer.nodes.Node;
+import fr.isep.simizer.nodes.VM;
+import fr.isep.simizer.requests.Request;
+import fr.isep.simizer.utils.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -7,12 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
-import fr.isep.simizer.example.policy.utils.ClusteringRequests;
-import fr.isep.simizer.example.policy.utils.LpSolver;
-import fr.isep.simizer.nodes.Node;
-import fr.isep.simizer.nodes.VM;
-import fr.isep.simizer.requests.Request;
-import fr.isep.simizer.utils.Vector;
 
 public class CostAware extends Policy.Callback {
 

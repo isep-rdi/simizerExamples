@@ -2,7 +2,6 @@
 package fr.isep.simizer.example.policy.utils;
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;

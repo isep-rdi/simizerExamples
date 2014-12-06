@@ -1,8 +1,8 @@
 package fr.isep.simizer.tutorial;
 
 import fr.isep.simizer.Simulation;
-import fr.isep.simizer.laws.GaussianLaw;
 import fr.isep.simizer.laws.ConstantLaw;
+import fr.isep.simizer.laws.GaussianLaw;
 import fr.isep.simizer.network.Network;
 import fr.isep.simizer.nodes.ClientNode;
 import fr.isep.simizer.nodes.VM;

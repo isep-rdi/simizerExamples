@@ -1,11 +1,11 @@
 package fr.isep.simizer.example.consistency;
 
-import java.util.List;
 import fr.isep.simizer.example.policy.utils.ConsistentHash;
 import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.nodes.VM.TaskScheduler;
 import fr.isep.simizer.requests.Request;
 import fr.isep.simizer.storage.Resource;
+import java.util.List;
 
 /**
  *
