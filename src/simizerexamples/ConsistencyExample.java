@@ -2,7 +2,7 @@ package simizerexamples;
 
 import fr.isep.simizer.Simulation;
 import fr.isep.simizer.app.Application;
-import fr.isep.simizer.example.LoadBalancerApp;
+import fr.isep.simizer.example.applications.LoadBalancerApp;
 import fr.isep.simizer.example.consistency.OptimisticPolicy;
 import static fr.isep.simizer.example.consistency.OptimisticPolicy.REP_FACTOR;
 import fr.isep.simizer.example.consistency.PessimisticPolicy;

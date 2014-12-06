@@ -1,4 +1,4 @@
-package fr.isep.simizer.example;
+package fr.isep.simizer.example.applications;
 
 import fr.isep.simizer.app.Application;
 import fr.isep.simizer.example.policy.Policy;

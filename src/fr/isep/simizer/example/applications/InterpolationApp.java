@@ -1,4 +1,4 @@
-package simizerexamples;
+package fr.isep.simizer.example.applications;
 
 import fr.isep.simizer.app.Application;
 import fr.isep.simizer.nodes.Node;

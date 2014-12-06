@@ -1,7 +1,7 @@
 package simizerexamples;
 
 import fr.isep.simizer.Simulation;
-import fr.isep.simizer.example.LoadBalancerApp;
+import fr.isep.simizer.example.applications.LoadBalancerApp;
 import fr.isep.simizer.example.policy.RoundRobin;
 import fr.isep.simizer.laws.ExponentialLaw;
 import fr.isep.simizer.laws.GaussianLaw;
