@@ -2,7 +2,7 @@ package simizerexamples;
 
 import fr.isep.simizer.Simulation;
 import fr.isep.simizer.app.Application;
-import fr.isep.simizer.example.applications.LoadBalancerApp;
+import fr.isep.simizer.example.applications.LoadBalancerApplication;
 import fr.isep.simizer.example.consistency.OptimisticPolicy;
 import static fr.isep.simizer.example.consistency.OptimisticPolicy.REP_FACTOR;
 import fr.isep.simizer.example.consistency.PessimisticPolicy;
@@ -51,7 +51,7 @@ public class ConsistencyExample {
     //2. machines creation
     VM vm1 = new VM();
     ConsistentPolicy cp = new ConsistentPolicy();
-    vm1.deploy(new LoadBalancerApp(0, 20000, new ConsistentPolicy()));
+    vm1.deploy(new LoadBalancerApplication(0, 20000, new ConsistentPolicy()));
 
     OptimisticPolicy.hashRing = new ConsistentHash<>(REP_FACTOR, 1, null);
     PessimisticPolicy.hashRing = new ConsistentHash<>(REP_FACTOR, 1, null);
@@ -61,7 +61,7 @@ public class ConsistencyExample {
     cp.initialize(null);
     //cp.addNode(vmApp0);
     //cp.addNode(vmApp1);
-    vm1.deploy(new LoadBalancerApp(0, 20000, cp));
+    vm1.deploy(new LoadBalancerApplication(0, 20000, cp));
 
     //3. Client creation
     ClientNode cn1 = new ClientNode(0);

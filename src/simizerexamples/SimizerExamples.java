@@ -1,7 +1,7 @@
 package simizerexamples;
 
 import fr.isep.simizer.Simulation;
-import fr.isep.simizer.example.applications.LoadBalancerApp;
+import fr.isep.simizer.example.applications.LoadBalancerApplication;
 import fr.isep.simizer.example.policy.RoundRobin;
 import fr.isep.simizer.laws.ExponentialLaw;
 import fr.isep.simizer.laws.GaussianLaw;
@@ -39,7 +39,7 @@ public class SimizerExamples {
 
     //2. machines creation
     VM vm1 = new VM();
-    vm1.deploy(new LoadBalancerApp(0, 20000, new RoundRobin()));
+    vm1.deploy(new LoadBalancerApplication(0, 20000, new RoundRobin()));
 
     ResourceFactory rf = new ResourceFactory(1024, 1000);
 
