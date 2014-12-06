@@ -93,7 +93,7 @@ public class Tutorial02 {
         switch (request.getAction()) {
           case "short":
           default:
-            instructions = 10_000;
+            instructions = 5_000_000;
             break;
 
           case "long":
@@ -118,20 +118,20 @@ public class Tutorial02 {
     // should be different depending on the randomization.
 
     // Starting Application #0
-    // Running on Node 1 (simizer.nodes.VM)
-    //   Request Client Errors      Start  Duration   N Delay  App Action;Params
-    //         1      2      0         10       265       265    0 short;
-    //         2      2      0        285       688       204    0 long;
-    //         3      2      0        983       670       186    0 long;
-    //         4      2      0       1663       242       242    0 short;
-    //         5      2      0       1915       189       189    0 short;
-    // Finished.  78 event(s) completed in 115ms.
+    // Running on Node 1 (fr.isep.simizer.nodes.VM)
+    // Request Client Errors      Start  Duration   N Delay  App Action;Params
+    //       1      2      0         10       204       183    0 short;
+    //       2      2      0        224       650       166    0 long;
+    //       3      2      0        884       263       242    0 short;
+    //       4      2      0       1157       228       207    0 short;
+    //       5      2      0       1395       221       200    0 short;
+    // Finished.  58 event(s) completed in 112ms.
 
-    // Here, we can see that the ClientNode sent five requests.  Three of them
-    // were "short" requests, and two of them were "long" requests.  We can see
+    // Here, we can see that the ClientNode sent five requests.  Four of them
+    // were "short" requests, and one of them was a "long" request.  We can see
     // that the Network delays are approximately the same for all of the
-    // Requests, but also that the "long" requests have noticeably more
-    // processing time.  Seems like the application worked!
+    // Requests, but also that the "long" request has noticeably more processing
+    // time.  Seems like the application worked!
 
     // Check out the next tutorial to learn about Resources and ResourceFactory
     // objects.
