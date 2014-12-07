@@ -51,8 +51,8 @@ public class Tutorial05 {
   // easily instantiate multiple instances of the class.
   private static class ApplicationHandler extends LoadBalancedApplication {
 
-    public ApplicationHandler(Node server, Integer loadBalancerId) {
-      super(APPLICATION_ID, StorageElement.MEGABYTE, server, loadBalancerId);
+    public ApplicationHandler(Node server) {
+      super(APPLICATION_ID, StorageElement.MEGABYTE, server);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Tutorial05 {
     for (int i = 0; i < 5; i++) {
       VM server = new VM();
       // We deploy an instance of the custom Application on each of them.
-      server.deploy(new ApplicationHandler(mainServer, loadBalancer.getId()));
+      server.deploy(new ApplicationHandler(mainServer));
       simulation.toNetworkAddNode(internet, server);
     }
 

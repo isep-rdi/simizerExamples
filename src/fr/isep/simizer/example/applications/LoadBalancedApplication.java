@@ -12,24 +12,23 @@ import fr.isep.simizer.requests.Request;
  */
 public abstract class LoadBalancedApplication extends Application {
 
-  private Integer loadBalancerApplicationId;
   private Node loadBalancer;
 
   public LoadBalancedApplication(Integer applicationId, long memorySize,
-          Node loadBalancer, Integer loadBalancerApplicationId) {
+          Node loadBalancer) {
     super(applicationId, memorySize);
 
     this.loadBalancer = loadBalancer;
-    this.loadBalancerApplicationId = loadBalancerApplicationId;
   }
 
   @Override
   public void init(TaskScheduler scheduler) {
-    Request register = new Request(loadBalancerApplicationId, "register", "");
+    // Since the "load balancer" and the "load balanced" applications need to
+    // use the same ID, we can use the ID of this application when registering.
+    Request register = new Request(getId(), "register", "");
 
     scheduler.sendOneWay(loadBalancer, register);
 
-    loadBalancerApplicationId = null;
     loadBalancer = null;
   }
 
