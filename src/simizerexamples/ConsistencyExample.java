@@ -80,19 +80,16 @@ public class ConsistencyExample {
       case "pessimistic":
         PessimisticPolicy.hashRing.add(vmApp0);
         PessimisticPolicy.hashRing.add(vmApp1);
-        app1 = new PessimisticPolicy(0, 20000);
-        app2 = new PessimisticPolicy(0, 20000);
+        app1 = new PessimisticPolicy(0, 20000, vm1);
+        app2 = new PessimisticPolicy(0, 20000, vm1);
         break;
       default:
         OptimisticPolicy.hashRing.add(vmApp0);
         OptimisticPolicy.hashRing.add(vmApp1);
-        app1 = new OptimisticPolicy(0, 20000);
-        app2 = new OptimisticPolicy(0, 20000);
+        app1 = new OptimisticPolicy(0, 20000, vm1);
+        app2 = new OptimisticPolicy(0, 20000, vm1);
         break;
     }
-
-    app1.setConfig("frontend", vm1.getId().toString());
-    app2.setConfig("frontend", vm1.getId().toString());
 
     vmApp0.deploy(app1);
     vmApp1.deploy(app2);

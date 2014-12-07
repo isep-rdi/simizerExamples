@@ -17,8 +17,8 @@ public class OptimisticPolicy extends StoreApplication {
 
   public static ConsistentHash<Node> hashRing = null;
 
-  public OptimisticPolicy(int id, int memSize) {
-    super(id, memSize);
+  public OptimisticPolicy(int id, int memSize, Node server) {
+    super(id, memSize, server);
   }
 
   /**

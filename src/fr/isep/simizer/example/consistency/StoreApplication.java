@@ -1,6 +1,6 @@
 package fr.isep.simizer.example.consistency;
 
-import fr.isep.simizer.app.Application;
+import fr.isep.simizer.example.applications.LoadBalancedApplication;
 import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.nodes.VM.TaskScheduler;
 import fr.isep.simizer.requests.Request;
@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author Sylvain Lefebvre
  */
-public abstract class StoreApplication extends Application {
+public abstract class StoreApplication extends LoadBalancedApplication {
 
   /**
    * Stores the return addresses for the in-progress {@code Request}s.
@@ -21,24 +21,9 @@ public abstract class StoreApplication extends Application {
    */
   protected final Map<Long, Node> pendingRequests;
 
-  public StoreApplication(int id, int memSize) {
-    super(id, memSize);
+  public StoreApplication(int id, int memSize, Node server) {
+    super(id, memSize, server);
     this.pendingRequests = new HashMap<>();
-  }
-
-  /**
-   * Initializes the application, registering with the load balancer.
-   *
-   * @param scheduler the {@link TaskScheduler} where the initialization
-   *            operations should occur
-   */
-  @Override
-  public void init(TaskScheduler scheduler) {
-    Request registerRequest = new Request(0, "register", "");
-
-    Node destination = vm.getNetwork().getNode(
-            Integer.parseInt(config.getProperty("frontend")));
-    scheduler.sendRequest(destination, registerRequest);
   }
 
   /**
