@@ -36,7 +36,7 @@ public class OptimisticPolicy extends StoreApplication {
     super.init(scheduler);
     
     synchronized (hashRing) {
-      hashRing.add(this.vm);
+      hashRing.add(scheduler.getVM());
     }
   }
 
@@ -65,7 +65,7 @@ public class OptimisticPolicy extends StoreApplication {
     sendResponse(scheduler, request);
 
     List<Node> replicas = hashRing.getList(res.getId());
-    replicas.remove(this.vm);
+    replicas.remove(scheduler.getVM());
     // fire and forget : optimistic approach
     for (Node node : replicas) {
       sendReplicationRequest(scheduler, node, res);
@@ -103,7 +103,7 @@ public class OptimisticPolicy extends StoreApplication {
           Resource resource) {
 
     Request request = new ReplicationRequest(getId(), resource);
-    request.setClientStartTimestamp(vm.getClock());
+    request.setClientStartTimestamp(scheduler.getVM().getClock());
     scheduler.sendOneWay(node, request);
   }
 }

@@ -46,7 +46,7 @@ public class PessimisticPolicy extends StoreApplication {
   public void init(TaskScheduler scheduler) {
     super.init(scheduler);
     synchronized (hashRing) {
-      hashRing.add(this.vm);
+      hashRing.add(scheduler.getVM());
     }
   }
 
@@ -75,7 +75,7 @@ public class PessimisticPolicy extends StoreApplication {
     scheduler.write(resource, resource.size());
 
     List<Node> replicas = hashRing.getList(resource.getId());
-    replicas.remove(this.vm);
+    replicas.remove(scheduler.getVM());
     // fire and forget : optimistic approach
     for (Node node : replicas) {
       sendReplicationRequest(scheduler, node, resource);
@@ -102,8 +102,8 @@ public class PessimisticPolicy extends StoreApplication {
   protected void sendReplicationRequest(TaskScheduler scheduler, Node node,
           Resource resource) {
 
-    Request request = new ReplicationRequest(getId(), resource, this.vm);
-    request.setClientStartTimestamp(vm.getClock());
+    Request request = new ReplicationRequest(getId(), resource, scheduler.getVM());
+    request.setClientStartTimestamp(scheduler.getVM().getClock());
     scheduler.sendRequest(node, request);
   }
 

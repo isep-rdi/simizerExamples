@@ -77,8 +77,8 @@ public class Tutorial02 {
         // However, to demonstrate its use, we'll print some information about
         // the application that is starting.
         System.out.println("Starting Application #" + getId());
-        System.out.println("Running on Node " + vm.getId()
-                + " (" + vm.getClass().getName() + ")");
+        System.out.println("Running on Node " + scheduler.getVM().getId()
+                + " (" + scheduler.getVM().getClass().getName() + ")");
       }
 
       @Override
