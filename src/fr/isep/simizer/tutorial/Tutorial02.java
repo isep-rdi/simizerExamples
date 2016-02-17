@@ -108,7 +108,12 @@ public class Tutorial02 {
 
     // The final step before running the simulation is to deploy the Application
     // on the VM.  We do that with the deploy() method.
-    server.deploy(handler);
+    try {
+		server.deploy(handler);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
     // Finally, let's run the simulation!
     simulation.runSim();

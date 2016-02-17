@@ -10,6 +10,7 @@ import fr.isep.simizer.nodes.ClientNode;
 import fr.isep.simizer.nodes.VM;
 import fr.isep.simizer.requests.RequestFactory;
 import fr.isep.simizer.storage.ResourceFactory;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class SimizerExamples {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
 
     ClientNode.configureLaws(
             new GaussianLaw(7),  // previous upper bound was 15

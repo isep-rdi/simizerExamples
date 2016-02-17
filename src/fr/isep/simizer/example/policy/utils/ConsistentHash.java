@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import fr.isep.simizer.utils.MurmurHash3;
 
 public class ConsistentHash<T> {
 
@@ -86,5 +87,6 @@ public class ConsistentHash<T> {
       return resultList;
       
   }
+  
 
 }
